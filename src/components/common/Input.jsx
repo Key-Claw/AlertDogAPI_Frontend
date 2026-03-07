@@ -1,13 +1,16 @@
-export default function Input(props) {
+// 1. Input reutilizable con etiqueta opcional
+export default function Input({ label, className = '', ...props }) {
   return (
-    <input
-      style={{
-        width: '100%',
-        padding: '0.55rem 0.75rem',
-        borderRadius: 'var(--radius-md)',
-        border: '1px solid #cfd6dc',
-      }}
-      {...props}
-    />
+    <label className="grid gap-1.5">
+      {label ? <span className="text-sm font-medium text-slate-700">{label}</span> : null}
+      <input
+        className={[
+          'w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm',
+          'outline-none transition placeholder:text-slate-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100',
+          className,
+        ].join(' ')}
+        {...props}
+      />
+    </label>
   );
 }

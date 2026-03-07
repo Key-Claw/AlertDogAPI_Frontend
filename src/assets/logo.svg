@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" role="img" aria-label="AlertDog logo">
-  <rect width="220" height="60" rx="12" fill="#0d2b45" />
-  <circle cx="28" cy="30" r="14" fill="#f2a900" />
-  <text x="54" y="38" fill="#ffffff" font-family="Verdana, sans-serif" font-size="24">AlertDog</text>
-</svg>

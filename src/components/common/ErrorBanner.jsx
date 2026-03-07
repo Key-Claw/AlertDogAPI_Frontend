@@ -1,8 +1,10 @@
+// 1. Banner de error reutilizable para feedback al usuario
 export default function ErrorBanner({ message }) {
+  // 2. No mostrar nada cuando no exista mensaje de error
   if (!message) return null;
 
   return (
-    <div style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', background: '#ffe8e8', color: '#7d1b1b' }}>
+    <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
       {message}
     </div>
   );

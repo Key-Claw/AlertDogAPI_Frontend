@@ -1,26 +1,31 @@
+// 1. Tabla generica con soporte para render personalizado por columna
 export default function Table({ columns = [], rows = [] }) {
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse', background: 'var(--color-surface)' }}>
-      <thead>
-        <tr>
+    <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white">
+      <table className="min-w-full border-collapse text-sm">
+        <thead className="bg-slate-50 text-slate-600">
+          <tr>
+          {/* 2. Header dinamico basado en definicion de columnas */}
           {columns.map((column) => (
-            <th key={column.key} style={{ textAlign: 'left', borderBottom: '1px solid #dbe2e8', padding: '0.75rem' }}>
+            <th key={column.key} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide">
               {column.label}
             </th>
           ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, index) => (
-          <tr key={row.id ?? index}>
-            {columns.map((column) => (
-              <td key={column.key} style={{ padding: '0.75rem', borderBottom: '1px solid #eef2f5' }}>
-                {row[column.key]}
-              </td>
-            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {/* 3. Body dinamico con fallback a valor directo por key */}
+          {rows.map((row, index) => (
+            <tr key={row.id ?? index} className="border-t border-slate-100">
+              {columns.map((column) => (
+                <td key={column.key} className="px-4 py-3 text-slate-700">
+                  {column.render ? column.render(row) : row[column.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

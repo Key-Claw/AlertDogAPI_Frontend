@@ -1,3 +1,4 @@
+// 1. Modulo de acceso a endpoints de perros
 import { apiClient } from './apiClient';
 
 export const perrosApi = {

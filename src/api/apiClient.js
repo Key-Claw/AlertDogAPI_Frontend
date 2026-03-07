@@ -1,27 +1,25 @@
+// 1. URL base del backend (prioriza variables de entorno)
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
-// Función genérica para hacer peticiones a la API
+// 2. Cliente HTTP generico para metodos REST
 async function request(path, options = {}) {
-  const url = `${API_BASE_URL}${path}`;
-  const config = {
+  const { body, headers, ...rest } = options;
+  const hasBody = body !== undefined && body !== null;
+
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...rest,
     headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
+      ...(hasBody ? { 'Content-Type': 'application/json' } : {}),
+      ...(headers || {}),
     },
-    ...options
-  };
+    body: hasBody ? JSON.stringify(body) : undefined,
+  });
 
-  // Si el cuerpo es un objeto, convertirlo a JSON
-  if (options.body && typeof options.body === 'object') {
-    options.body = JSON.stringify(options.body);
-  }
-
-  const response = await fetch(url, config);
-
-  // Intentar parsear la respuesta como JSON, pero manejar casos donde no sea posible
-  let payload = null;
+  // 3. Intentar parsear respuesta segun tipo de contenido
   const contentType = response.headers.get('content-type') || '';
+  let payload = null;
+
   if (contentType.includes('application/json')) {
     payload = await response.json();
   } else {
@@ -29,26 +27,22 @@ async function request(path, options = {}) {
     payload = text || null;
   }
 
+  // 4. Normalizar errores para que toda la app los maneje igual
   if (!response.ok) {
-    const message =
-      (payload && payload.error) ||
-      (payload && payload.message) ||
-      `HTTP ${response.status}`;
-    const err = new Error(message);
-    err.status = response.status;
-    err.payload = payload;
-    throw err;
+    const message = payload?.error || payload?.message || `HTTP ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
   }
 
   return payload;
 }
 
-// Exportar un objeto con métodos para cada verbo HTTP
+// 5. API client publico por verbo HTTP
 export const apiClient = {
   get: (path) => request(path, { method: 'GET' }),
-  post: (path, data) =>
-    request(path, { method: 'POST', body: JSON.stringify(data) }),
-  put: (path, data) =>
-    request(path, { method: 'PUT', body: JSON.stringify(data) }),
-  delete: (path) => request(path, { method: 'DELETE' })
+  post: (path, data) => request(path, { method: 'POST', body: data }),
+  put: (path, data) => request(path, { method: 'PUT', body: data }),
+  delete: (path) => request(path, { method: 'DELETE' }),
 };

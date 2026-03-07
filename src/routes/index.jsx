@@ -1,3 +1,4 @@
+// 1. Definicion de rutas principales de la app
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from '../components/layout/AppLayout.jsx';
 import CitasPage from '../pages/CitasPage.jsx';
@@ -9,6 +10,7 @@ import { ROUTES } from '../utils/constants.js';
 
 export default function AppRoutes() {
   return (
+    // 2. Rutas protegidas por layout + fallback 404
     <Routes>
       <Route element={<AppLayout />}>
         <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />

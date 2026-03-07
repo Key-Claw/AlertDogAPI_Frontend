@@ -1,28 +1,23 @@
 import { useCallback, useState } from 'react';
 
-export default function useApi(apiFn) {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+// Generic async hook to keep loading/error state close to API actions.
+export default function useApi() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const execute = useCallback(
-    async (...args) => {
-      setLoading(true);
-      setError(null);
+  // 1. Ejecutar una llamada async estandarizando loading y error
+  const execute = useCallback(async (apiFn, ...args) => {
+    setLoading(true);
+    setError(null);
+    try {
+      return await apiFn(...args);
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-      try {
-        const response = await apiFn(...args);
-        setData(response.data);
-        return response.data;
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [apiFn]
-  );
-
-  return { data, error, loading, execute };
+  return { loading, error, setError, execute };
 }

@@ -1,8 +1,10 @@
+// 1. Modulo de acceso a endpoints de citas
 import { apiClient } from './apiClient';
 
 export const citasApi = {
   getAll: () => apiClient.get('/citas'),
   getById: (id) => apiClient.get(`/citas/${id}`),
+  // 2. Capturar regla de negocio del backend para citas duplicadas
   create: async (cita) => {
     try {
       return await apiClient.post('/citas', cita);

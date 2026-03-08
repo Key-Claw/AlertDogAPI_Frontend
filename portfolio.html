@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="scroll-smooth dark" lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gentle Paws - Free Tailwind Template</title>
+    <meta content="Download this free Tailwind CSS Pet Services website template for Gentle Paws. Features a soft ui evolution design, fully responsive layout, and includes 14 pre-built pages like service-detail.html, index.html, forgot-password.html." name="description"/>
+    <meta content="free gentle paws website template, gentle paws website landing page, tailwind css gentle paws website theme, responsive gentle paws website design, soft ui evolution gentle paws website" name="keywords"/>
+    <meta content="Gentle Paws - Free Tailwind Template" property="og:title"/>
+    <meta content="Download this free Tailwind CSS Pet Services website template for Gentle Paws. Features a soft ui evolution design, fully responsive layout, and includes 14 pre-built pages like service-detail.html, index.html, forgot-password.html." property="og:description"/>
+    <meta content="website" property="og:type"/>
+    <meta content="https://freestacktemplates.io/og-previews/gentle_paws-pet_services-soft_ui_evolution-template/index-og.jpg" property="og:image"/>
+    <meta content="https://freestacktemplates.io/tailwind/gentle_paws-pet_services-soft_ui_evolution-template" property="og:url"/>
+    <meta content="summary_large_image" name="twitter:card"/>
+    <meta content="Gentle Paws - Free Tailwind Template" name="twitter:title"/>
+    <meta content="Download this free Tailwind CSS Pet Services website template for Gentle Paws. Features a soft ui evolution design, fully responsive layout, and includes 14 pre-built pages like service-detail.html, index.html, forgot-password.html." name="twitter:description"/>
+    <meta content="https://freestacktemplates.io/og-previews/gentle_paws-pet_services-soft_ui_evolution-template/index-og.jpg" name="twitter:image"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet"/>
+    <script defer src="scripts.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  </head>
+  <body class="font-body">
+
+    <!-- Header Placeholder -->
+    <header class="fixed w-full z-50 transition-all duration-300 bg-[#F9F9F9]/90 backdrop-blur-md border-b border-white/20">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+
+          <!-- Logo -->
+          <a class="flex items-center gap-2 group" href="index.html">
+            <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]">
+              <i class="fas fa-paw text-xl"></i>
+            </div>
+            <span class="text-2xl font-bold text-accent tracking-tight group-hover:text-primary transition-colors">PawsCare</span>
+          </a>
+
+          <!-- Desktop Menu -->
+          <nav class="hidden md:flex items-center gap-8">
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="index.html">Home</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="services.html">Services</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="about.html">About Us</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="portfolio.html">Portfolio</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="contact.html">Contact</a>
+          </nav>
+
+          <!-- Action Buttons -->
+          <div class="hidden md:flex items-center gap-4">
+            <a class="text-primary font-semibold hover:text-[#357ABD] transition-colors" href="portal.html">
+              <i class="fas fa-user-circle mr-1"></i> Pet Portal
+            </a>
+            <a class="px-6 py-2.5 rounded-xl bg-[#F9F9F9] text-primary font-bold shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all active:scale-95" href="booking.html">Book Now</a>
+          </div>
+
+          <!-- Mobile Toggle -->
+          <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-[#F9F9F9] text-accent flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] active:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff]" aria-expanded="false" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 bg-[#F9F9F9] rounded-xl shadow-[8px_8px_16px_#d1d9e6,-8px_-8px_16px_#ffffff] p-6 flex flex-col gap-4 z-50">
+          <a class="block py-2 text-left text-accent font-medium hover:text-primary transition-colors" href="index.html">Home</a>
+          <a class="block py-2 text-left text-accent font-medium hover:text-primary transition-colors" href="services.html">Services</a>
+          <a class="block py-2 text-left text-accent font-medium hover:text-primary transition-colors" href="about.html">About Us</a>
+          <a class="block py-2 text-left text-accent font-medium hover:text-primary transition-colors" href="portfolio.html">Portfolio</a>
+          <a class="block py-2 text-left text-accent font-medium hover:text-primary transition-colors" href="contact.html">Contact</a>
+          <a class="block py-2 text-left text-primary font-semibold hover:text-[#357ABD] transition-colors" href="portal.html">
+            <i class="fas fa-user-circle mr-1"></i> Pet Portal
+          </a>
+          <a class="block py-3 px-6 text-center rounded-xl bg-[#F9F9F9] text-primary font-bold shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]" href="booking.html">Book Now</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Happy Tails Success Stories -->
+    <section id="happy_tails_success_stories" class="pt-32 pb-20 px-6 text-center">
+      <div class="container mx-auto max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold text-accent mb-6">Happy Tails & Success Stories</h1>
+        <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+          Nothing makes us happier than seeing our patients recover and thrive. Here are some of our favorite success stories.
+        </p>
+      </div>
+    </section>
+
+    <!-- Maxs Amazing Recovery -->
+    <section id="maxs_amazing_recovery" class="pb-20 px-6">
+      <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <!-- Story 1 -->
+          <div class="soft-card overflow-hidden group">
+            <div class="h-64 overflow-hidden">
+              <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Golden Retriever" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&q=80"/>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#E3F2FD] text-primary text-xs font-bold">Orthopedics</span>
+                <span class="text-gray-400 text-sm">•</span>
+                <span class="text-gray-500 text-sm">Max</span>
+              </div>
+              <h3 class="text-xl font-bold text-accent mb-3">Max's Amazing Recovery</h3>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                Max came to us with a torn ligament but after successful TPLO surgery, he's back to running freely.
+              </p>
+              <a class="text-primary font-bold hover:text-[#357ABD] flex items-center gap-2" href="portfolio-detail.html">Read Story
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 2 -->
+          <div class="soft-card overflow-hidden group">
+            <div class="h-64 overflow-hidden">
+              <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Cat looking healthy" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&q=80"/>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#E8F5E9] text-[#66BB6A] text-xs font-bold">Internal Medicine</span>
+                <span class="text-gray-400 text-sm">•</span>
+                <span class="text-gray-500 text-sm">Luna</span>
+              </div>
+              <h3 class="text-xl font-bold text-accent mb-3">Luna Beats the Odds</h3>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                Diagnosed with a rare condition, Luna's fighting spirit and our tailored treatment plan saved the day.
+              </p>
+              <a class="text-primary font-bold hover:text-[#357ABD] flex items-center gap-2" href="portfolio-detail.html">Read Story
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 3 -->
+          <div class="soft-card overflow-hidden group">
+            <div class="h-64 overflow-hidden">
+              <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Puppy smiling" src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80"/>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#FFF0F0] text-[#FF8A80] text-xs font-bold">Dental</span>
+                <span class="text-gray-400 text-sm">•</span>
+                <span class="text-gray-500 text-sm">Cooper</span>
+              </div>
+              <h3 class="text-xl font-bold text-accent mb-3">Cooper's New Smile</h3>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                Severe dental disease was causing Cooper pain. A full cleaning and extraction gave him his appetite back.
+              </p>
+              <a class="text-primary font-bold hover:text-[#357ABD] flex items-center gap-2" href="portfolio-detail.html">Read Story
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 4 -->
+          <div class="soft-card overflow-hidden group">
+            <div class="h-64 overflow-hidden">
+              <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Dog running" src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=800&q=80"/>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#F3E5F5] text-[#AB47BC] text-xs font-bold">Rehabilitation</span>
+                <span class="text-gray-400 text-sm">•</span>
+                <span class="text-gray-500 text-sm">Bella</span>
+              </div>
+              <h3 class="text-xl font-bold text-accent mb-3">Bella Walks Again</h3>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                After a spinal injury, Bella underwent intensive physical therapy and is now walking unassisted.
+              </p>
+              <a class="text-primary font-bold hover:text-[#357ABD] flex items-center gap-2" href="portfolio-detail.html">Read Story
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 5 -->
+          <div class="soft-card overflow-hidden group">
+            <div class="h-64 overflow-hidden">
+              <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Dog looking happy" src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=800&q=80"/>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#FFF8E1] text-[#FFA000] text-xs font-bold">Wellness</span>
+                <span class="text-gray-400 text-sm">•</span>
+                <span class="text-gray-500 text-sm">Rocky</span>
+              </div>
+              <h3 class="text-xl font-bold text-accent mb-3">Rocky's Weight Loss Journey</h3>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                With a strict diet plan and exercise routine, Rocky lost 15lbs and has more energy than ever.
+              </p>
+              <a class="text-primary font-bold hover:text-[#357ABD] flex items-center gap-2" href="portfolio-detail.html">Read Story
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 6 -->
+          <div class="soft-card overflow-hidden group">
+            <div class="h-64 overflow-hidden">
+              <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Dog portrait" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&q=80"/>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#E0F7FA] text-[#26C6DA] text-xs font-bold">Emergency</span>
+                <span class="text-gray-400 text-sm">•</span>
+                <span class="text-gray-500 text-sm">Daisy</span>
+              </div>
+              <h3 class="text-xl font-bold text-accent mb-3">Daisy's Close Call</h3>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                Daisy ingested a toxic substance but thanks to our rapid response team, she made a full recovery.
+              </p>
+              <a class="text-primary font-bold hover:text-[#357ABD] flex items-center gap-2" href="portfolio-detail.html">Read Story
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <footer class="bg-[#F9F9F9] pt-20 pb-10 border-t border-white/50">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
+          <!-- Brand Info -->
+          <div>
+            <a class="flex items-center gap-2 mb-6" href="index.html">
+              <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]">
+                <i class="fas fa-paw text-sm"></i>
+              </div>
+              <span class="text-xl font-bold text-accent">PawsCare</span>
+            </a>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              Compassionate veterinary care for your furry family members. We combine modern medicine with a gentle touch.
+            </p>
+            <div class="flex gap-4">
+              <a class="w-10 h-10 rounded-full bg-[#F9F9F9] text-primary flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all" href="https://facebook.com">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a class="w-10 h-10 rounded-full bg-[#F9F9F9] text-primary flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all" href="https://twitter.com">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a class="w-10 h-10 rounded-full bg-[#F9F9F9] text-primary flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all" href="https://instagram.com">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h3 class="text-lg font-bold text-accent mb-6">Quick Links</h3>
+            <ul class="space-y-4">
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="index.html">Home</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="services.html">Our Services</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="about.html">About Us</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="portfolio.html">Success Stories</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="contact.html">Contact</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div>
+            <h3 class="text-lg font-bold text-accent mb-6">Services</h3>
+            <ul class="space-y-4">
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="service-detail.html">Wellness Exams</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="service-detail.html">Vaccinations</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="service-detail.html">Dental Care</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="service-detail.html">Surgery</a>
+              </li>
+              <li>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="service-detail.html">Emergency Care</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact & Emergency -->
+          <div>
+            <h3 class="text-lg font-bold text-accent mb-6">Contact Us</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-primary mt-1"></i>
+                <span class="text-gray-600">123 Pet Lover Lane,
+                  <br/>
+Paw City, PC 12345
+                </span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-phone text-primary"></i>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="tel:+15551234567">(555) 123-4567</a>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-envelope text-primary"></i>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="mailto:hello@pawscare.com">hello@pawscare.com</a>
+              </li>
+            </ul>
+            <div class="mt-6 p-4 rounded-xl bg-[#FF8A80]/10 border border-[#FF8A80]/20">
+              <p class="text-[#FF8A80] font-bold text-sm mb-1">
+                <i class="fas fa-ambulance mr-2"></i> Emergency 24/7
+              </p>
+              <a class="text-accent font-bold text-lg hover:text-[#FF8A80] transition-colors" href="tel:+15559999999">(555) 999-9999</a>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-gray-500 text-sm">© 2024 PawsCare Veterinary Clinic. All rights reserved.</p>
+          <div class="flex gap-6">
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="privacy.html">Privacy Policy</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="terms.html">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

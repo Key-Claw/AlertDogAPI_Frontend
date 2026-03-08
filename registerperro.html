@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Registrar perro — Canem</title>
+
+    <!-- Tailwind CDN (mantener) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tipografía y estilos adicionales -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+    <style>
+      /* pequeño ajuste local para que coincida la "voz" visual con las otras páginas */
+      :root { --canem-primary: #357ABD; }
+      .soft-card { background: white; border-radius: 1rem; box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+      .soft-input { border: 1px solid #E6E9EE; border-radius: 0.75rem; background: #FBFBFD; }
+      .soft-input:focus { outline: 2px solid rgba(53,122,189,0.12); box-shadow: 0 0 0 4px rgba(53,122,189,0.06); }
+    </style>
+  </head>
+
+  <body class="font-body antialiased bg-gray-50 text-gray-700">
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur border-b border-white/20">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <a class="flex items-center gap-3 group" href="index.html">
+          <img src="public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+          <span class="text-2xl font-bold text-gray-900">Canem</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8">
+          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="index.html">Inicio</a>
+          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="services.html">Servicios</a>
+          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="conocenos.html">Conócenos</a>
+          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="contact.html">Contacto</a>
+        </nav>
+
+        <div class="hidden md:flex items-center gap-4">
+          <a href="portal.html" class="text-[var(--canem-primary)] font-semibold"><i class="fas fa-user-circle mr-1"></i> Tus perros</a>
+          <a href="booking.html" class="px-4 py-2 rounded-xl bg-white border font-bold hover:shadow">Pedir cita</a>
+        </div>
+
+        <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden px-6 pb-6">
+        <a class="block py-2" href="index.html">Inicio</a>
+        <a class="block py-2" href="services.html">Servicios</a>
+        <a class="block py-2" href="conocenos.html">Conócenos</a>
+        <a class="block py-2" href="contact.html">Contacto</a>
+      </div>
+    </header>
+
+    <!-- Formulario registro perro -->
+    <main class="pt-28 min-h-screen flex items-center">
+      <div class="container mx-auto px-6 max-w-md">
+        <div class="soft-card p-8 md:p-12">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Registrar perro</h1>
+          <p class="text-gray-600 mb-6">Añade un perro para poder gestionarlo desde tu panel.</p>
+
+          <form id="perroForm" class="space-y-4" novalidate>
+            <div>
+              <label for="perro-nombre" class="block text-gray-600 mb-2 font-semibold">Nombre</label>
+              <input id="perro-nombre" name="nombre" class="soft-input w-full px-4 py-3" placeholder="Ej. Max" type="text" required />
+            </div>
+
+            <div>
+              <label for="perro-raza" class="block text-gray-600 mb-2 font-semibold">Raza</label>
+              <input id="perro-raza" name="raza" class="soft-input w-full px-4 py-3" placeholder="Ej. Labrador" type="text" required />
+            </div>
+
+            <div>
+              <label for="perro-genero" class="block text-gray-600 mb-2 font-semibold">Género</label>
+              <select id="perro-genero" name="genero" class="soft-input w-full px-4 py-3" required>
+                <option value="">Selecciona género</option>
+                <option value="1">Macho</option>
+                <option value="0">Hembra</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="perro-fecha" class="block text-gray-600 mb-2 font-semibold">Fecha de nacimiento</label>
+              <input id="perro-fecha" name="fecha_de_nacimiento" class="soft-input w-full px-4 py-3" type="date" />
+            </div>
+
+            <!-- estado / mensajes -->
+            <div id="form-status" class="text-sm min-h-[1.5rem] text-center text-gray-600"></div>
+
+            <!-- boton -->
+            <button id="perroBtn" class="w-full py-3 rounded-xl font-bold text-white" type="submit"
+              style="background:var(--canem-primary); box-shadow: 0 8px 18px rgba(53,122,189,0.18);">
+              Añadir perro
+            </button>
+          </form>
+
+          <p class="mt-6 text-center text-gray-600">
+            <a class="text-[var(--canem-primary)] font-bold" href="portal.html">Volver al panel</a>
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-white/80 border-t mt-8">
+      <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+        © <span id="year"></span> Canem. Todos los derechos reservados.
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // año
+        const y = document.getElementById('year');
+        if (y) y.textContent = new Date().getFullYear();
+
+        // max fecha = hoy
+        const fechaInput = document.getElementById('perro-fecha');
+        if (fechaInput) {
+          const hoy = new Date().toISOString().split('T')[0];
+          fechaInput.max = hoy;
+        }
+
+        // mobile menu toggle
+        const btn = document.getElementById('mobile-menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        const status = document.getElementById('form-status');
+        const form = document.getElementById('perroForm');
+        const submitBtn = document.getElementById('perroBtn');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          status.textContent = '';
+          submitBtn.disabled = true;
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = 'Enviando...';
+
+          const nombre = document.getElementById('perro-nombre').value.trim();
+          const raza = document.getElementById('perro-raza').value.trim();
+          const generoVal = document.getElementById('perro-genero').value;
+          const fecha = document.getElementById('perro-fecha').value || null;
+
+          if (!nombre || !raza || generoVal === "") {
+            status.textContent = 'Completa los campos: nombre, raza y género.';
+            status.className = 'text-sm text-red-600 text-center';
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            return;
+          }
+
+          const genero = generoVal === "1" ? 1 : 0;
+          let payload = { nombre, raza, genero, fecha_de_nacimiento: fecha };
+
+          // intentar añadir id_usuario desde localStorage
+          try {
+            const rawUser = localStorage.getItem('canem_user');
+            if (rawUser) {
+              const user = JSON.parse(rawUser);
+              if (user && user.id) payload.id_usuario = user.id;
+            }
+          } catch (err) {
+            // no pasa nada si no se puede leer
+          }
+
+          try {
+            const res = await fetch('/perros', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            // intenta parsear JSON (si existe)
+            let data = {};
+            try { data = await res.json(); } catch (e) {}
+
+            if (!res.ok) {
+              const msg = data?.error || data?.message || 'Error al añadir el perro.';
+              throw new Error(msg);
+            }
+
+            // éxito
+            status.textContent = 'Perro añadido correctamente. Redirigiendo al panel...';
+            status.className = 'text-sm text-green-600 text-center';
+            setTimeout(() => window.location.href = 'portal.html', 900);
+          } catch (err) {
+            status.textContent = err.message || 'Error desconocido. Intenta más tarde.';
+            status.className = 'text-sm text-red-600 text-center';
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

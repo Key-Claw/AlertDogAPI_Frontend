@@ -6,16 +6,17 @@
     <title>Registrar perro - Canem</title>
 
     <!-- Tailwind CDN (mantener) -->
-    <script type="module" src="../../assets/js/tailwind.config.js"></script>
+    <script type="module" src="/assets/js/tailwind.config.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Tipografía y estilos adicionales -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="../../assets/css/style.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
-    <link href="../../assets/css/style.css" rel="stylesheet"/>
 
+    <!-- Scripts -->
+    <script defer src="/assets/js/scripts.js"></script>
 
   </head>
 
@@ -23,21 +24,20 @@
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur border-b border-white/20">
       <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <a class="flex items-center gap-3 group" href="../public/index.html">
-          <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+        <a class="flex items-center gap-3 group" href="/pages/public/index.html">
+          <img src="/public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
           <span class="text-2xl font-bold text-gray-900">Canem</span>
         </a>
 
         <nav class="hidden md:flex items-center gap-8">
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/index.html">Inicio</a>
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/services.html">Servicios</a>
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/about.html">Conócenos</a>
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/contact.html">Contacto</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/index.html">Inicio</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/about.html">Conócenos</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a>
         </nav>
 
-        <div class="hidden md:flex items-center gap-4">
-          <a href="/pages/app/portal.html" class="text-[var(--canem-primary)] font-semibold"><i class="fas fa-user-circle mr-1"></i> Tus perros</a>
-          <a href="/pages/app/booking.html" class="px-4 py-2 rounded-xl bg-white border font-bold hover:shadow">Pedir cita</a>
+        <div class="hidden md:flex items-center gap-4" id="header-actions">
+          <!-- Header actions will be rendered here -->
         </div>
 
         <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center">
@@ -47,10 +47,13 @@
 
       <!-- Mobile menu -->
       <div id="mobile-menu" class="hidden px-6 pb-6">
-        <a class="block py-2" href="../public/index.html">Inicio</a>
-        <a class="block py-2" href="../public/services.html">Servicios</a>
-        <a class="block py-2" href="../public/about.html">Conócenos</a>
-        <a class="block py-2" href="../public/contact.html">Contacto</a>
+        <div id="mobile-header-actions">
+          <!-- Mobile header actions will be rendered here -->
+        </div>
+        <a class="block py-2" href="/pages/public/index.html">Inicio</a>
+        <a class="block py-2" href="/pages/public/services.html">Servicios</a>
+        <a class="block py-2" href="/pages/public/about.html">Conócenos</a>
+        <a class="block py-2" href="/pages/public/contact.html">Contacto</a>
       </div>
     </header>
 
@@ -97,14 +100,13 @@
             <div id="form-status" class="text-sm min-h-[1.5rem] text-center text-gray-600"></div>
 
             <!-- boton -->
-            <button id="perroBtn" class="w-full py-3 rounded-xl font-bold text-white" type="submit"
-              style="background:var(--canem-primary); box-shadow: 0 8px 18px rgba(53,122,189,0.18);">
-              Añadir perro
+            <button id="perroBtn" class="soft-btn-primary w-full py-3 font-bold text-lg rounded-xl" type="submit">
+              Enviar
             </button>
           </form>
 
           <p class="mt-6 text-center text-gray-600">
-            <a class="text-[var(--canem-primary)] font-bold" href="../app/portal.html">Volver al panel</a>
+            <a class="text-[var(--canem-primary)] font-bold" href="../app/hogar.html">Volver al panel</a>
           </p>
         </div>
       </div>
@@ -133,6 +135,9 @@
         const btn = document.getElementById('mobile-menu-toggle');
         const menu = document.getElementById('mobile-menu');
         if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        // render header actions
+        if (window.renderHeaderActions) renderHeaderActions();
 
         const status = document.getElementById('form-status');
         const form = document.getElementById('perroForm');
@@ -254,8 +259,8 @@
 
             // éxito
             status.textContent = editingId
-              ? 'Perro actualizado correctamente. Redirigiendo al panel...'
-              : 'Perro añadido correctamente. Redirigiendo al panel...';
+              ? 'Perro actualizado correctamente. Redirigiendo a hogar...'
+              : 'Perro añadido correctamente. Redirigiendo a hogar...';
             status.className = 'text-sm text-green-600 text-center';
             await Swal.fire({
               icon: 'success',
@@ -263,7 +268,7 @@
               timer: 1400,
               showConfirmButton: false
             });
-            setTimeout(() => window.location.href = '../app/portal.html', 900);
+            setTimeout(() => window.location.href = '../app/hogar.html', 900);
           } catch (err) {
             status.textContent = err.message || 'Error desconocido. Intenta más tarde.';
             status.className = 'text-sm text-red-600 text-center';

@@ -1,5 +1,4 @@
-﻿// scripts.js - versión extendida: sesión, header dinámico, hogar, perfil, usuarios (admin) y citas
-// El backend expone recursos en la raíz (ej: /usuarios, /perros, /citas).
+﻿// scripts.js - versión corregida: sesión, header dinámico, hogar, perfil, usuarios (admin) y citas
 const API_BASE = 'http://localhost:3000';
 
 let swalLoader;
@@ -92,27 +91,32 @@ function renderHeaderActions() {
   const user = getUser();
 
   if (!user) {
-    // no sesión
-    const loginLink = createAnchor('Iniciar sesión', '../../pages/auth/login.html', 'text-primary font-semibold');
-    const registerLink = createAnchor('Registrarse', '../../pages/auth/register.html', 'soft-btn soft-btn-primary px-5 py-2.5 text-white font-bold');
-    
+    const loginLink = createAnchor('Iniciar sesión', '/pages/auth/login.html', 'text-primary font-semibold');
+    const registerLink = createAnchor('Registrarse', '/pages/auth/register.html', 'soft-btn soft-btn-primary px-5 py-2.5 text-white font-bold');
+
     if (desktop) {
+      // dejamos las utilidades de CSS originales: 'hidden md:flex' en el markup
       desktop.appendChild(loginLink.cloneNode(true));
       desktop.appendChild(registerLink.cloneNode(true));
-      desktop.classList.remove('hidden');
     }
     if (mobile) {
-      mobile.appendChild(loginLink);
-      mobile.appendChild(registerLink);
+      // para móvil queremos enlaces verticales: clonamos y añadimos clases block
+      const mLogin = loginLink.cloneNode(true);
+      mLogin.classList.add('block', 'py-2', 'text-accent');
+      const mRegister = registerLink.cloneNode(true);
+      mRegister.classList.add('block', 'py-2', 'text-accent');
+      mobile.appendChild(mLogin);
+      mobile.appendChild(mRegister);
     }
     return;
   }
 
-  // hay sesión -> menú diferente según rol
   const isAdmin = isAdminUser(user);
-  const leftLink1 = isAdmin ? createAnchor('Usuarios', '../../pages/app/usuarios.html', 'text-primary font-semibold') : createAnchor('Perfil', '../../pages/app/perfil.html', 'text-primary font-semibold');
-  const citasLink = createAnchor('Citas', '../../pages/app/citas.html', 'text-primary font-semibold');
-  const hogarLink = createAnchor('Hogar', '../../pages/app/hogar.html', 'text-primary font-semibold');
+  const leftLink1 = isAdmin
+    ? createAnchor('Usuarios', '/pages/app/usuarios.html', 'text-primary font-semibold')
+    : createAnchor('Perfil', '/pages/app/perfil.html', 'text-primary font-semibold');
+  const citasLink = createAnchor('Citas', '/pages/app/citas.html', 'text-primary font-semibold');
+  const hogarLink = createAnchor('Hogar', '/pages/app/hogar.html', 'text-primary font-semibold');
 
   const logoutBtn = document.createElement('button');
   logoutBtn.className = 'ml-2 text-sm text-gray-500';
@@ -120,33 +124,47 @@ function renderHeaderActions() {
   logoutBtn.addEventListener('click', () => {
     clearToken(); clearUser(); renderHeaderActions();
     const currentPath = location.pathname;
-    // si estás en páginas privadas, volver al index
     if (pathEndsWithAny(currentPath, [
-      '../../pages/app/portal.html',
-      '../../pages/app/hogar.html',
-      '../../pages/app/perfil.html',
-      '../../pages/app/usuarios.html',
-      '../../pages/app/citas.html',
-      '../../pages/app/perros.html',
-      '../../pages/app/booking.html'
+      '/pages/app/portal.html',
+      '/pages/app/hogar.html',
+      '/pages/app/perfil.html',
+      '/pages/app/usuarios.html',
+      '/pages/app/citas.html',
+      '/pages/app/perros.html',
+      '/pages/app/booking.html'
     ])) {
-      location.href = './index.html';
+      location.href = '/pages/public/index.html';
     }
   });
 
   if (desktop) {
+    // NO removemos 'hidden' para que siga respetando el breakpoint (hidden md:flex)
     desktop.appendChild(leftLink1);
     desktop.appendChild(citasLink);
     desktop.appendChild(hogarLink);
     desktop.appendChild(logoutBtn);
-    desktop.classList.remove('hidden');
   }
+
   if (mobile) {
-    mobile.appendChild(leftLink1.cloneNode(true));
-    mobile.appendChild(citasLink.cloneNode(true));
-    mobile.appendChild(hogarLink.cloneNode(true));
+    // para móvil: clonamos y forzamos estilos de bloque (orden vertical)
+    const mLeft = leftLink1.cloneNode(true);
+    const mCitas = citasLink.cloneNode(true);
+    const mHogar = hogarLink.cloneNode(true);
+    mLeft.classList.add('block', 'py-2', 'text-accent');
+    mCitas.classList.add('block', 'py-2', 'text-accent');
+    mHogar.classList.add('block', 'py-2', 'text-accent');
+
+    mobile.appendChild(mLeft);
+    mobile.appendChild(mCitas);
+    mobile.appendChild(mHogar);
+
     const mobLogout = logoutBtn.cloneNode(true);
-    mobLogout.addEventListener('click', () => { clearToken(); clearUser(); renderHeaderActions(); document.getElementById('mobile-menu')?.classList.add('hidden'); });
+    mobLogout.classList.add('block', 'py-2', 'text-accent', 'w-full', 'text-left');
+    mobLogout.addEventListener('click', () => {
+      clearToken(); clearUser(); renderHeaderActions();
+      document.getElementById('mobile-menu')?.classList.add('hidden');
+      location.href = '/pages/public/index.html';
+    });
     mobile.appendChild(mobLogout);
   }
 }
@@ -247,15 +265,14 @@ function openAuthModal() {
       renderHeaderActions();
       modal.remove();
       const currentPath = location.pathname;
-      // recargar si estamos en páginas privadas
       if (pathEndsWithAny(currentPath, [
-        '../../pages/app/portal.html',
-        '../../pages/app/hogar.html',
-        '../../pages/app/perfil.html',
-        '../../pages/app/citas.html',
-        '../../pages/app/usuarios.html',
-        '../../pages/app/perros.html',
-        '../../pages/app/booking.html'
+        '/pages/app/portal.html',
+        '/pages/app/hogar.html',
+        '/pages/app/perfil.html',
+        '/pages/app/citas.html',
+        '/pages/app/usuarios.html',
+        '/pages/app/perros.html',
+        '/pages/app/booking.html'
       ])) location.reload();
     } catch (err) {
       await notify('error', 'Error: ' + err.message);
@@ -271,7 +288,6 @@ async function apiFetch(path, opts = {}) {
   if (token) opts.headers['Authorization'] = 'Bearer ' + token;
   const res = await fetch(API_BASE + path, opts);
   if (res.status === 401) {
-    // sesión caducada
     clearToken(); clearUser(); renderHeaderActions();
     throw new Error('No autorizado');
   }
@@ -444,7 +460,6 @@ async function getCitasAll() {
   }
 }
 
-// Para usuario normal: sus citas (cruzando con sus perros)
 async function getCitasUsuario() {
   const user = getUser();
   if (!user) return null;
@@ -452,7 +467,6 @@ async function getCitasUsuario() {
     const perros = isAdminUser(user) ? await getPerrosAll() : await getPerrosUsuario();
     const ids = (perros || []).map(p => Number(p.id));
     const all = await getCitasAll();
-    // filtramos por id_perro
     return all.filter(c => ids.includes(Number(c.id_perro)));
   } catch (err) {
     console.error(err);
@@ -461,7 +475,6 @@ async function getCitasUsuario() {
 }
 
 function createCitaCard(cita, extraInfo = {}) {
-  // extraInfo puede contener nombrePerro, email usuario, etc.
   const card = document.createElement('div');
   card.className = 'soft-card p-4 rounded-lg';
 
@@ -511,7 +524,6 @@ async function deleteCita(id) {
   return true;
 }
 
-// render de la página de citas
 async function renderCitas() {
   const container = document.getElementById('citas-list');
   const emptyBox = document.getElementById('citas-empty');
@@ -531,17 +543,13 @@ async function renderCitas() {
 
   try {
     if (isAdmin) {
-      // admin: mostrar todas las citas agrupadas por fecha
       const all = await getCitasAll();
       container.innerHTML = '';
       if (!all || all.length === 0) {
         if (emptyBox) emptyBox.classList.remove('hidden');
         return;
       }
-      // ordenar por fecha
       all.sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
-      // crear tarjetas (podemos intentar mapear perro y usuario si el backend no lo ofrece)
-      // pedimos perros y usuarios para enriquecer la info
       const perros = await (await apiFetch('/perros', { method: 'GET' })).json().catch(()=>[]);
       const usuarios = await (await apiFetch('/usuarios', { method: 'GET' })).json().catch(()=>[]);
 
@@ -552,14 +560,12 @@ async function renderCitas() {
         container.appendChild(createCitaCard(cita, extra));
       });
     } else {
-      // usuario normal: mostrar solo sus citas
       const citas = await getCitasUsuario();
       container.innerHTML = '';
       if (!citas || citas.length === 0) {
         if (emptyBox) emptyBox.classList.remove('hidden');
         return;
       }
-      // obtener perros del usuario para nombre
       const perros = isAdminUser(user) ? await getPerrosAll() : await getPerrosUsuario();
       citas.sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
       citas.forEach(cita => {
@@ -597,14 +603,11 @@ function createUsuarioRow(usuario) {
       <button class="px-3 py-1 rounded bg-yellow-500 text-white btn-toggle-role" data-id="${encodeURIComponent(usuario.id)}">Cambiar rol</button>
     </td>
   `;
-  // listener cambiar rol
   const btn = tr.querySelector('.btn-toggle-role');
   if (btn) {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-id');
-      // petición PUT para cambiar rol (backend debe soportarlo)
       try {
-        // obtener usuario actual -> invertir rol
         const currentRol = usuario.rol ? 1 : 0;
         const newRol = currentRol ? 0 : 1;
         const res = await apiFetch(`/usuarios/${id}`, {
@@ -615,7 +618,6 @@ function createUsuarioRow(usuario) {
           const txt = await res.text().catch(()=>null);
           throw new Error(txt || 'Error al actualizar rol');
         }
-        // recargar tabla
         await renderUsuarios();
       } catch (err) {
         await notify('error', 'No se pudo actualizar el rol.');
@@ -644,7 +646,6 @@ async function renderUsuarios() {
       if (emptyBox) emptyBox.classList.remove('hidden');
       return;
     }
-    // crear filas
     usuarios.forEach(u => {
       container.appendChild(createUsuarioRow(u));
     });
@@ -728,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ---------- PERFIL: render de la página perfil.html ----------
+// ---------- PERFIL ----------
 function renderPerfilPage() {
   const el = document.getElementById('perfil-container');
   if (!el) return;

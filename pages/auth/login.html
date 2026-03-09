@@ -115,8 +115,12 @@
             const { password: _pwd, ...safeUser } = found;
             localStorage.setItem('canem_token', 'local-session');
             localStorage.setItem('canem_user', JSON.stringify(safeUser));
-            // redirigir
-            location.href = '../../pages/app/portal.html';
+            // redirigir basado en rol
+            if (found.rol) {
+              location.href = '../../pages/app/usuarios.html';
+            } else {
+              location.href = '../../pages/app/perfil.html';
+            }
           } catch (err) {
             await Swal.fire({
               icon: 'error',

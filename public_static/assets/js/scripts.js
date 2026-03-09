@@ -623,8 +623,20 @@ async function getUsuariosAll() {
   }
 }
 
+async function deleteUsuarioById(id) {
+  if (!id) throw new Error('id inválido');
+  const res = await apiFetch(`/usuarios/${id}`, { method: 'DELETE' });
+  if (!res.ok) {
+    const txt = await res.text().catch(() => null);
+    throw new Error(txt || 'Error al eliminar usuario');
+  }
+  return true;
+}
+
 function createUsuarioRow(usuario) {
   const tr = document.createElement('tr');
+  const sessionUser = getUser();
+  const isCurrentUser = Number(sessionUser?.id) === Number(usuario.id);
   tr.innerHTML = `
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.id)}</td>
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.nombre)} ${escapeHtml(usuario.apellido)}</td>
@@ -632,6 +644,9 @@ function createUsuarioRow(usuario) {
     <td class="px-4 py-2 border-b">${isAdminUser(usuario) ? 'Admin' : 'Cliente'}</td>
     <td class="px-4 py-2 border-b">
       <button class="px-3 py-1 rounded bg-yellow-500 text-white btn-toggle-role" data-id="${encodeURIComponent(usuario.id)}">Cambiar rol</button>
+    </td>
+    <td class="px-4 py-2 border-b">
+      <button class="px-3 py-1 rounded ${isCurrentUser ? 'bg-red-300 cursor-not-allowed' : 'bg-red-600'} text-white btn-delete-user" data-id="${encodeURIComponent(usuario.id)}" ${isCurrentUser ? 'disabled' : ''}>Eliminar</button>
     </td>
   `;
   const btn = tr.querySelector('.btn-toggle-role');
@@ -655,6 +670,22 @@ function createUsuarioRow(usuario) {
       }
     });
   }
+
+  const deleteBtn = tr.querySelector('.btn-delete-user');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async () => {
+      const id = deleteBtn.getAttribute('data-id');
+      if (!(await confirmAction('¿Eliminar este usuario? Se borrarán en cascada sus perros y citas.'))) return;
+      try {
+        await deleteUsuarioById(id);
+        await notify('success', 'Usuario eliminado correctamente.');
+        await renderUsuarios();
+      } catch (err) {
+        await notify('error', 'No se pudo eliminar el usuario.');
+      }
+    });
+  }
+
   return tr;
 }
 

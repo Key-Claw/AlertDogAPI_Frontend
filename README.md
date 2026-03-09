@@ -8,6 +8,10 @@ Frontend de AlertDog para gestionar:
 - perros de alerta
 - citas
 
+## Documentacion adicional
+- `AUTORIA_FRONTEND.md`: tutorial explicativo de autoria tecnica del frontend.
+- `DEPLOYMENT_CHECKLIST.md`: guia de verificaciones para despliegue.
+
 ## Estado actual (Marzo 2026)
 - Frontend consolidado como sitio multipagina (`pages/` + `assets/`).
 - Se eliminaron capas y archivos duplicados que no participaban en el flujo principal.

@@ -88,6 +88,14 @@ function renderHeaderActions() {
   if (desktop) desktop.innerHTML = '';
   if (mobile) mobile.innerHTML = '';
 
+  // Fuerza clases responsivas coherentes en todas las páginas.
+  if (desktop) {
+    desktop.className = 'hidden md:flex items-center gap-4';
+  }
+  if (mobile) {
+    mobile.className = 'mt-4 space-y-1';
+  }
+
   const user = getUser();
 
   if (!user) {
@@ -113,13 +121,13 @@ function renderHeaderActions() {
 
   const isAdmin = isAdminUser(user);
   const leftLink1 = isAdmin
-    ? createAnchor('Usuarios', '/pages/app/usuarios.html', 'text-primary font-semibold')
-    : createAnchor('Perfil', '/pages/app/perfil.html', 'text-primary font-semibold');
-  const citasLink = createAnchor('Citas', '/pages/app/citas.html', 'text-primary font-semibold');
-  const hogarLink = createAnchor('Hogar', '/pages/app/hogar.html', 'text-primary font-semibold');
+    ? createAnchor('Usuarios', '/pages/app/usuarios.html', 'text-primary font-semibold px-1')
+    : createAnchor('Perfil', '/pages/app/perfil.html', 'text-primary font-semibold px-1');
+  const citasLink = createAnchor('Citas', '/pages/app/citas.html', 'text-primary font-semibold px-1');
+  const hogarLink = createAnchor('Hogar', '/pages/app/hogar.html', 'text-primary font-semibold px-1');
 
   const logoutBtn = document.createElement('button');
-  logoutBtn.className = 'ml-2 text-sm text-gray-500';
+  logoutBtn.className = 'soft-btn soft-btn-primary px-5 py-2.5 text-white font-bold';
   logoutBtn.textContent = 'Cerrar sesión';
   logoutBtn.addEventListener('click', () => {
     clearToken(); clearUser(); renderHeaderActions();
@@ -150,16 +158,16 @@ function renderHeaderActions() {
     const mLeft = leftLink1.cloneNode(true);
     const mCitas = citasLink.cloneNode(true);
     const mHogar = hogarLink.cloneNode(true);
-    mLeft.classList.add('block', 'py-2', 'text-accent');
-    mCitas.classList.add('block', 'py-2', 'text-accent');
-    mHogar.classList.add('block', 'py-2', 'text-accent');
+    mLeft.className = 'block py-2 text-accent font-semibold';
+    mCitas.className = 'block py-2 text-accent font-semibold';
+    mHogar.className = 'block py-2 text-accent font-semibold';
 
     mobile.appendChild(mLeft);
     mobile.appendChild(mCitas);
     mobile.appendChild(mHogar);
 
     const mobLogout = logoutBtn.cloneNode(true);
-    mobLogout.classList.add('block', 'py-2', 'text-accent', 'w-full', 'text-left');
+    mobLogout.className = 'block py-2 text-accent w-full text-left font-semibold';
     mobLogout.addEventListener('click', () => {
       clearToken(); clearUser(); renderHeaderActions();
       document.getElementById('mobile-menu')?.classList.add('hidden');

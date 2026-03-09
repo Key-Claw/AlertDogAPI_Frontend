@@ -21,6 +21,7 @@ export default defineConfig({
         citas: resolve(__dirname, 'pages/app/citas.html'),
         booking: resolve(__dirname, 'pages/app/booking.html'),
         perfil: resolve(__dirname, 'pages/app/perfil.html'),
+        editarPerfil: resolve(__dirname, 'pages/app/editar-perfil.html'),
         usuarios: resolve(__dirname, 'pages/app/usuarios.html'),
       },
     },

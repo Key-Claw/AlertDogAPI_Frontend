@@ -152,6 +152,7 @@ function renderHeaderActions() {
       '/pages/app/portal.html',
       '/pages/app/hogar.html',
       '/pages/app/perfil.html',
+      '/pages/app/editar-perfil.html',
       '/pages/app/usuarios.html',
       '/pages/app/citas.html',
       '/pages/app/perros.html',
@@ -766,6 +767,7 @@ document.addEventListener('DOMContentLoaded', () => {
     '/pages/app/portal.html',
     '/pages/app/citas.html',
     '/pages/app/perfil.html',
+    '/pages/app/editar-perfil.html',
     '/pages/app/perros.html',
     '/pages/app/booking.html',
     '/pages/app/usuarios.html'
@@ -794,6 +796,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderUsuarios();
   } else if (pathEndsWithAny(path, ['/pages/app/perfil.html'])) {
     renderPerfilPage();
+  } else if (pathEndsWithAny(path, ['/pages/app/editar-perfil.html'])) {
+    renderEditarPerfilPage();
   } else if (path === '/' || pathEndsWithAny(path, ['/index.html', '/pages/public/index.html'])) {
     renderHomeListado();
     const searchInput = document.getElementById('home-search');
@@ -828,12 +832,84 @@ function renderPerfilPage() {
         <p><strong>Rol:</strong> ${isAdminUser(user) ? 'Admin' : 'Cliente'}</p>
       </div>
       <div class="mt-6 flex gap-3">
-        <a href="/pages/auth/register.html" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Actualizar datos</a>
+        <a href="/pages/app/editar-perfil.html" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Actualizar datos</a>
         <button id="perfil-logout" class="px-4 py-2 rounded bg-gray-100">Cerrar sesión</button>
       </div>
     </div>
   `;
   document.getElementById('perfil-logout').addEventListener('click', () => {
     clearToken(); clearUser(); renderHeaderActions(); location.href = '/pages/public/index.html';
+  });
+}
+
+// ---------- EDITAR PERFIL ----------
+function renderEditarPerfilPage() {
+  const el = document.getElementById('editar-perfil-container');
+  if (!el) return;
+  const user = getUser();
+  if (!user) {
+    el.innerHTML = `<div class="soft-card p-6 text-center">Para editar tu perfil, inicia sesión. <br/><a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="soft-card p-8">
+      <h2 class="text-2xl font-bold mb-4">Editar perfil</h2>
+      <form id="editar-perfil-form" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-600 mb-2 font-semibold">Nombre</label>
+            <input id="edit-nombre" class="soft-input w-full px-4 py-3" value="${escapeHtml(user.nombre || '')}" required />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-2 font-semibold">Apellido</label>
+            <input id="edit-apellido" class="soft-input w-full px-4 py-3" value="${escapeHtml(user.apellido || '')}" required />
+          </div>
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-2 font-semibold">Email</label>
+          <input id="edit-email" type="email" class="soft-input w-full px-4 py-3" value="${escapeHtml(user.email || '')}" required />
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-2 font-semibold">Teléfono</label>
+          <input id="edit-telefono" class="soft-input w-full px-4 py-3" value="${escapeHtml(user.telefono || '')}" />
+        </div>
+        <div class="flex gap-3">
+          <button type="submit" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Guardar cambios</button>
+          <a href="/pages/app/perfil.html" class="px-4 py-2 rounded bg-gray-100">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.getElementById('editar-perfil-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const updatedData = {
+      nombre: document.getElementById('edit-nombre').value.trim(),
+      apellido: document.getElementById('edit-apellido').value.trim(),
+      email: document.getElementById('edit-email').value.trim(),
+      telefono: document.getElementById('edit-telefono').value.trim()
+    };
+
+    try {
+      const response = await apiFetch(`/usuarios/${user.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedData)
+      });
+
+      if (response.ok) {
+        // Update local user data
+        const updatedUser = { ...user, ...updatedData };
+        setUser(updatedUser);
+        await notify('success', 'Datos actualizados correctamente');
+        // Redirect back to profile page
+        location.href = '/pages/app/perfil.html';
+      } else {
+        const errorData = await response.json();
+        await notify('error', getApiErrorMessage(errorData, 'Error al actualizar datos'));
+      }
+    } catch (error) {
+      await notify('error', 'Error de conexión al actualizar datos');
+    }
   });
 }

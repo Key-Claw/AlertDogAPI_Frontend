@@ -21,6 +21,18 @@ Documentos relacionados:
 - Build de produccion funcional con Vite.
 - Integracion con backend en `http://localhost:3000`.
 - Rutas privadas (`/pages/app/*`) validadas para carga de datos en `usuarios`, `citas` y `hogar`.
+- Vista admin de usuarios con columnas de `Perros`, `Rol`, `Acciones` y `Eliminar`.
+- Eliminacion de usuarios desde UI conectada a `DELETE /usuarios/:id` (cascade en DB).
+
+## Novedades recientes
+- Tabla admin de usuarios alineada con backend:
+  - Muestra perros en propiedad por usuario.
+  - Boton `Cambiar rol` por fila.
+  - Boton `Eliminar` por fila con confirmacion.
+- Sincronizacion de assets para preview/build usando `public_static`.
+- Reportes de testing disponibles en:
+  - `TEST_REPORT.md` (raiz del workspace)
+  - `AlertDogAPI_Frontend/TEST_REPORT.md`
 
 ## Tecnologias usadas (que son y para que sirven)
 | Tecnologia | Que es | Para que se usa en este proyecto |
@@ -120,6 +132,10 @@ Orden recomendado de lectura:
 - `npm run dev`: servidor de desarrollo.
 - `npm run build`: build de produccion en `dist/`.
 - `npm run preview`: servir build localmente.
+
+Nota de assets estaticos:
+- El proyecto usa `public_static` como carpeta publica para build/preview.
+- Si editas `assets/js/scripts.js`, conviene reflejarlo tambien en `public_static/assets/js/scripts.js` antes de generar `dist`.
 
 Nota de puertos:
 - `npm run dev` suele usar `5173`.

@@ -625,6 +625,7 @@ async function getUsuariosAll() {
 
 async function deleteUsuarioById(id) {
   if (!id) throw new Error('id inválido');
+  // El backend dispara la eliminacion y la BD aplica cascade sobre perro/cita.
   const res = await apiFetch(`/usuarios/${id}`, { method: 'DELETE' });
   if (!res.ok) {
     const txt = await res.text().catch(() => null);
@@ -636,8 +637,10 @@ async function deleteUsuarioById(id) {
 function createUsuarioRow(usuario, perrosPorUsuario = new Map()) {
   const tr = document.createElement('tr');
   const sessionUser = getUser();
+  // Evita acciones destructivas sobre la misma cuenta admin conectada.
   const isCurrentUser = Number(sessionUser?.id) === Number(usuario.id);
   const perrosUsuario = perrosPorUsuario.get(Number(usuario.id)) || [];
+  // La columna "Perros" resume nombres para dar contexto rapido por usuario.
   const perrosLabel = perrosUsuario.length
     ? perrosUsuario.map((p) => escapeHtml(p.nombre || `#${p.id}`)).join(', ')
     : 'Sin perros';
@@ -714,6 +717,7 @@ async function renderUsuarios() {
       return;
     }
 
+    // Se consulta tambien perros para pintar propiedad por usuario en la tabla admin.
     const perros = await getPerrosAll().catch(() => []);
     const perrosPorUsuario = new Map();
     (perros || []).forEach((perro) => {

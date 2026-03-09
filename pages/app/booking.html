@@ -6,13 +6,16 @@
 <title>Pedir cita - Canem</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="../../assets/js/tailwind.config.js"></script>
+<script defer src="../../assets/js/scripts.js"></script>
+
 
 <!-- FLATPICKR -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<link href="/assets/css/style.css" rel="stylesheet"/>
+<link href="../../assets/css/style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 
 <style>
@@ -216,7 +219,7 @@ timer:1200,
 showConfirmButton:false
 });
 
-setTimeout(()=>location.href="/pages/app/citas.html",1000);
+setTimeout(()=>location.href="../app/citas.html",1000);
 
 }catch(err){
 

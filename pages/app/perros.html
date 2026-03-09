@@ -7,12 +7,15 @@
 
     <!-- Tailwind CDN (mantener) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/tailwind.config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Tipografía y estilos adicionales -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="/assets/css/style.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.css" rel="stylesheet"/>
+
 
     <style>
       /* pequeño ajuste local para que coincida la "voz" visual con las otras páginas */
@@ -27,16 +30,16 @@
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur border-b border-white/20">
       <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <a class="flex items-center gap-3 group" href="/index.html">
-          <img src="/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+        <a class="flex items-center gap-3 group" href="../public/index.html">
+          <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
           <span class="text-2xl font-bold text-gray-900">Canem</span>
         </a>
 
         <nav class="hidden md:flex items-center gap-8">
-          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="/index.html">Inicio</a>
-          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="/pages/public/services.html">Servicios</a>
-          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="/pages/public/about.html">Conócenos</a>
-          <a class="text-gray-700 hover:text-[var(--canem-primary)] transition-colors" href="/pages/public/contact.html">Contacto</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/index.html">Inicio</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/services.html">Servicios</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/about.html">Conócenos</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../public/contact.html">Contacto</a>
         </nav>
 
         <div class="hidden md:flex items-center gap-4">
@@ -51,10 +54,10 @@
 
       <!-- Mobile menu -->
       <div id="mobile-menu" class="hidden px-6 pb-6">
-        <a class="block py-2" href="/index.html">Inicio</a>
-        <a class="block py-2" href="/pages/public/services.html">Servicios</a>
-        <a class="block py-2" href="/pages/public/about.html">Conócenos</a>
-        <a class="block py-2" href="/pages/public/contact.html">Contacto</a>
+        <a class="block py-2" href="../public/index.html">Inicio</a>
+        <a class="block py-2" href="../public/services.html">Servicios</a>
+        <a class="block py-2" href="../public/about.html">Conócenos</a>
+        <a class="block py-2" href="../public/contact.html">Contacto</a>
       </div>
     </header>
 
@@ -108,7 +111,7 @@
           </form>
 
           <p class="mt-6 text-center text-gray-600">
-            <a class="text-[var(--canem-primary)] font-bold" href="/pages/app/portal.html">Volver al panel</a>
+            <a class="text-[var(--canem-primary)] font-bold" href="../app/portal.html">Volver al panel</a>
           </p>
         </div>
       </div>
@@ -267,7 +270,7 @@
               timer: 1400,
               showConfirmButton: false
             });
-            setTimeout(() => window.location.href = '/pages/app/portal.html', 900);
+            setTimeout(() => window.location.href = '../app/portal.html', 900);
           } catch (err) {
             status.textContent = err.message || 'Error desconocido. Intenta más tarde.';
             status.className = 'text-sm text-red-600 text-center';

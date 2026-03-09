@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Iniciar sesión - Canem</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/tailwind.config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="/assets/css/style.css" rel="stylesheet"/>
-    <script type="module" defer src="/assets/js/scripts.js"></script>
+    <link href="../../assets/css/style.css" rel="stylesheet"/>
+    <script defer src="../../assets/js/scripts.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
   </head>
 
@@ -18,15 +19,15 @@
       <div class="container mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
           <a class="flex items-center gap-3 group" href="/index.html">
-            <img src="/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+            <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
             <span class="text-2xl font-bold text-accent tracking-tight group-hover:text-primary transition-colors">Canem</span>
           </a>
 
           <nav class="hidden md:flex items-center gap-8">
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="/index.html">Inicio</a>
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a>
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/about.html">Sobre nosotros</a>
-            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../../pages/public/index.html">Inicio</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../../pages/public/services.html">Servicios</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../../pages/public/about.html">Sobre nosotros</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="../../pages/public/contact.html">Contacto</a>
           </nav>
 
           <!-- Aquí inyecta scripts.js los botones (Login / Registrarse) o (Tus perros / Logout) -->
@@ -38,15 +39,15 @@
         </div>
 
         <div id="mobile-menu" class="hidden md:hidden mt-4 bg-white rounded-xl p-6 shadow-lg" aria-hidden="true">
-          <a class="block py-2 text-accent font-medium hover:text-primary" href="/index.html">Inicio</a>
-          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/services.html">Servicios</a>
-          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/about.html">Sobre nosotros</a>
-          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/contact.html">Contacto</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="../../pages/public/index.html">Inicio</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="../../pages/public/services.html">Servicios</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="../../pages/public/about.html">Sobre nosotros</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="../../pages/public/contact.html">Contacto</a>
 
           <!-- Contenedor móvil para acciones inyectadas por JS -->
           <div id="mobile-header-actions" class="mt-4"></div>
 
-          <a class="block mt-4 py-2 text-center rounded-xl bg-white text-primary font-bold border" href="/pages/app/booking.html">Pedir cita</a>
+          <a class="block mt-4 py-2 text-center rounded-xl bg-white text-primary font-bold border" href="../../pages/app/booking.html">Pedir cita</a>
         </div>
       </div>
     </header>
@@ -71,7 +72,7 @@
             <button id="loginBtn" class="soft-btn soft-btn-primary w-full py-4 font-bold text-lg rounded-lg" type="submit">Entrar</button>
           </form>
 
-          <p class="mt-6 text-center text-gray-600">¿No tienes cuenta? <a class="text-primary font-bold" href="/pages/auth/register.html">Regístrate</a></p>
+          <p class="mt-6 text-center text-gray-600">¿No tienes cuenta? <a class="text-primary font-bold" href="../../pages/auth/register.html">Regístrate</a></p>
         </div>
       </div>
     </main>
@@ -90,7 +91,7 @@
       document.addEventListener('DOMContentLoaded', () => {
         try {
           const raw = localStorage.getItem('canem_user');
-          if (raw) location.href = '/pages/app/portal.html';
+          if (raw) location.href = '../app/portal.html';
         } catch(e) { /* ignore */ }
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -119,7 +120,7 @@
             localStorage.setItem('canem_token', 'local-session');
             localStorage.setItem('canem_user', JSON.stringify(safeUser));
             // redirigir
-            location.href = '/pages/app/portal.html';
+            location.href = '../../pages/app/portal.html';
           } catch (err) {
             await Swal.fire({
               icon: 'error',

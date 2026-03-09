@@ -1,37 +1,38 @@
 ﻿<!DOCTYPE html>
 <html class="scroll-smooth dark" lang="es">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Conócenos - Canem</title>
-    <meta name="description" content="Equipo especializado en perros de alerta médica - Canem" />
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sobre nosotros - Canem</title>
+    <meta content="Sobre nosotros Canem - adiestramiento perros de alerta médica" name="description"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../assets/js/tailwind.config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="/assets/css/style.css" rel="stylesheet"/>
+    <link href="../../assets/css/style.css" rel="stylesheet"/>
+    <script defer src="../../assets/js/scripts.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
   </head>
+  <body class="font-body">
 
-  <body class="font-body antialiased bg-gray-50 text-gray-700">
-<!-- Header -->
+    <!-- Header -->
 <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-white/20">
   <div class="container mx-auto px-6 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo -->
-      <a class="flex items-center gap-3 group" href="/index.html">
-        <img src="/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+      <a class="flex items-center gap-3 group" href="index.html">
+        <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
         <span class="text-2xl font-bold text-accent tracking-tight group-hover:text-primary transition-colors">Canem</span>
       </a>
 
       <!-- Desktop Menu -->
       <nav class="hidden md:flex items-center gap-8">
-        <a class="text-accent font-medium hover:text-primary transition-colors" href="/index.html">Inicio</a>
-        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a>
-        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/about.html">Sobre nosotros</a>
-        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./index.html">Inicio</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./services.html">Servicios</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./about.html">Sobre nosotros</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./contact.html">Contacto</a>
       </nav>
 
       <!-- Action Buttons (inyectados por JS) -->
-      <!-- scripts.js debe buscar #header-actions y rellenarlo según el estado de sesión -->
       <div id="header-actions" class="hidden md:flex items-center gap-4" aria-live="polite"></div>
 
       <!-- Mobile Toggle -->
@@ -42,15 +43,15 @@
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden mt-4 bg-white rounded-xl p-6 shadow-lg" aria-hidden="true">
-      <a class="block py-2 text-accent font-medium hover:text-primary" href="/index.html">Inicio</a>
-      <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/services.html">Servicios</a>
-      <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/about.html">Sobre nosotros</a>
-      <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/contact.html">Contacto</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="../../index.html">Inicio</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./services.html">Servicios</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./about.html">Sobre nosotros</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./contact.html">Contacto</a>
 
       <!-- Contenedor móvil para acciones que inyecte JS (login / tus perros / pedir cita / logout) -->
       <div id="mobile-header-actions" class="mt-4"></div>
 
-      <a class="block mt-4 py-2 text-center rounded-xl bg-white text-primary font-bold border" href="/pages/app/booking.html">Pedir cita</a>
+      <a class="block mt-4 py-2 text-center rounded-xl bg-white text-primary font-bold border" href="../../pages/app/booking.html">Pedir cita</a>
     </div>
   </div>
 </header>
@@ -77,8 +78,7 @@
 
             <!-- Imagen a la derecha -->
             <div class="rounded-lg overflow-hidden shadow-lg">
-              <!-- Cambia la ruta si quieres otra imagen -->
-              <img src="/Foto1.webp" alt="Equipo Canem" class="w-full h-80 object-cover rounded-lg" onerror="this.src='/Foto2.jpg'"/>
+              <img src="../../public/Foto1.webp" alt="Equipo Canem" class="w-full h-80 object-cover rounded-lg" onerror="this.src='/Foto2.jpg'"/>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
         <div class="container mx-auto">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <img src="/Foto3.jpg" alt="Paco y Lidia" class="w-full h-auto rounded-lg shadow-lg object-cover"/>
+              <img src="../../public/Foto3.jpg" alt="Paco y Lidia" class="w-full h-auto rounded-lg shadow-lg object-cover"/>
               <div class="mt-6">
                 <a href="https://www.youtube.com/watch?v=k5hIpRcxUHs" target="_blank" class="block text-center bg-purple-200 border border-purple-700 text-purple-900 font-semibold py-3 rounded-lg hover:opacity-95">Conócenos en este vídeo</a>
               </div>
@@ -117,92 +117,62 @@
 
     </main>
 
- <!-- Footer -->
+    <!-- Footer -->
     <footer class="bg-[#F9F9F9] pt-20 pb-10 border-t border-white/50">
       <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-
-          <!-- Marca (imagen + nombre) -->
+          <!-- (footer content igual que en otras páginas) -->
           <div>
-            <a class="flex items-center gap-2 mb-6" href="/index.html">
-              <img src="/favicon.jpeg" alt="Canem logo" class="w-8 h-8 rounded-lg object-cover shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]" />
+            <a class="flex items-center gap-2 mb-6" href="index.html">
+              <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-8 h-8 rounded-lg object-cover shadow-sm" />
               <span class="text-xl font-bold text-accent">Canem</span>
             </a>
             <p class="text-gray-600 mb-6 leading-relaxed">
-              Cuidado compasivo y entrenamiento especializado para tu perro. Convertimos a tu mascota en un compañero más seguro para ti.
+              Cuidado compasivo y entrenamiento especializado para tu perro.
             </p>
-            <div class="flex gap-4">
-              <a class="w-10 h-10 rounded-full bg-[#F9F9F9] text-primary flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all" href="https://facebook.com">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a class="w-10 h-10 rounded-full bg-[#F9F9F9] text-primary flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all" href="https://twitter.com">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a class="w-10 h-10 rounded-full bg-[#F9F9F9] text-primary flex items-center justify-center shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff] hover:shadow-[inset_4px_4px_10px_#d1d9e6,inset_-4px_-4px_10px_#ffffff] transition-all" href="https://instagram.com">
-                <i class="fab fa-instagram"></i>
-              </a>
-            </div>
           </div>
 
-          <!-- Enlaces rápidos (sin 'Historias de éxito') -->
           <div>
             <h3 class="text-lg font-bold text-accent mb-6">Enlaces rápidos</h3>
             <ul class="space-y-4">
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/index.html">Inicio</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/about.html">Sobre nosotros</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="../../index.html">Inicio</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./services.html">Servicios</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./public/about.html">Sobre nosotros</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./public/contact.html">Contacto</a></li>
             </ul>
           </div>
 
-          <!-- Servicios -->
           <div>
             <h3 class="text-lg font-bold text-accent mb-6">Servicios</h3>
             <ul class="space-y-4">
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/services.html">Exámenes de bienestar</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/services.html">Vacunaciones</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/services.html">Cuidado dental</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/services.html">Cirugía</a></li>
-              <li><a class="text-gray-600 hover:text-primary transition-colors" href="/pages/public/services.html">Atención de urgencias</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="../public/services.html">Exámenes de bienestar</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="../public/services.html">Vacunaciones</a></li>
             </ul>
           </div>
 
-          <!-- Contacto y Videollamada (reemplaza emergencias) -->
           <div>
             <h3 class="text-lg font-bold text-accent mb-6">Contacto</h3>
             <ul class="space-y-4">
               <li class="flex items-start gap-3">
                 <i class="fas fa-map-marker-alt text-primary mt-1"></i>
-                <span class="text-gray-600">C/ Amantes de las Mascotas, 123<br/>Ciudad Canina, PC 12345</span>
+                <span class="text-gray-600">C. de Manuel Lorenzo Pardo, 17, 50008 Zaragoza</span>
               </li>
               <li class="flex items-center gap-3">
                 <i class="fas fa-phone text-primary"></i>
                 <a class="text-gray-600 hover:text-primary transition-colors" href="tel:+15551234567">(555) 123-4567</a>
               </li>
-              <li class="flex items-center gap-3">
-                <i class="fas fa-envelope text-primary"></i>
-                <a class="text-gray-600 hover:text-primary transition-colors" href="mailto:hola@canem.com">hola@canem.com</a>
-              </li>
             </ul>
-
           </div>
         </div>
 
         <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p class="text-gray-500 text-sm">© <span id="year"></span> Canem. Todos los derechos reservados.</p>
           <div class="flex gap-6">
-            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Política de privacidad</a>
-            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Términos y condiciones</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="../public/contact.html">Política de privacidad</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="../public/contact.html">Términos y condiciones</a>
           </div>
         </div>
       </div>
     </footer>
-    <script type="module" defer src="/assets/js/scripts.js"></script>
   </body>
 </html>
-
-
-
-
-
-

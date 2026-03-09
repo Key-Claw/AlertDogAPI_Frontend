@@ -77,6 +77,11 @@ function getUser() {
 function setUser(u) { localStorage.setItem('canem_user', JSON.stringify(u)); }
 function clearUser() { localStorage.removeItem('canem_user'); }
 
+// ---------- utils ----------
+function pathEndsWithAny(targetPath, arr) {
+  return arr.some(p => targetPath.endsWith(p));
+}
+
 // ---------- header actions (ahora según rol) ----------
 function renderHeaderActions() {
   const desktop = document.getElementById('header-actions');
@@ -88,9 +93,9 @@ function renderHeaderActions() {
 
   if (!user) {
     // no sesión
-    const loginLink = createAnchor('Iniciar sesión', '/pages/auth/login.html', 'text-primary font-semibold');
-    const registerLink = createAnchor('Registrarse', '/pages/auth/register.html', 'soft-btn soft-btn-primary px-5 py-2.5 text-white font-bold');
-
+    const loginLink = createAnchor('Iniciar sesión', '../../pages/auth/login.html', 'text-primary font-semibold');
+    const registerLink = createAnchor('Registrarse', '../../pages/auth/register.html', 'soft-btn soft-btn-primary px-5 py-2.5 text-white font-bold');
+    
     if (desktop) {
       desktop.appendChild(loginLink.cloneNode(true));
       desktop.appendChild(registerLink.cloneNode(true));
@@ -105,9 +110,9 @@ function renderHeaderActions() {
 
   // hay sesión -> menú diferente según rol
   const isAdmin = isAdminUser(user);
-  const leftLink1 = isAdmin ? createAnchor('Usuarios', '/pages/app/usuarios.html', 'text-primary font-semibold') : createAnchor('Perfil', '/pages/app/perfil.html', 'text-primary font-semibold');
-  const citasLink = createAnchor('Citas', '/pages/app/citas.html', 'text-primary font-semibold');
-  const hogarLink = createAnchor('Hogar', '/pages/app/hogar.html', 'text-primary font-semibold');
+  const leftLink1 = isAdmin ? createAnchor('Usuarios', '../../pages/app/usuarios.html', 'text-primary font-semibold') : createAnchor('Perfil', '../../pages/app/perfil.html', 'text-primary font-semibold');
+  const citasLink = createAnchor('Citas', '../../pages/app/citas.html', 'text-primary font-semibold');
+  const hogarLink = createAnchor('Hogar', '../../pages/app/hogar.html', 'text-primary font-semibold');
 
   const logoutBtn = document.createElement('button');
   logoutBtn.className = 'ml-2 text-sm text-gray-500';
@@ -115,8 +120,17 @@ function renderHeaderActions() {
   logoutBtn.addEventListener('click', () => {
     clearToken(); clearUser(); renderHeaderActions();
     const currentPath = location.pathname;
-    if (currentPath === '/pages/app/portal.html' || currentPath === '/pages/app/hogar.html' || currentPath === '/pages/app/perfil.html' || currentPath === '/pages/app/usuarios.html' || currentPath === '/pages/app/citas.html') {
-      location.href = '/index.html';
+    // si estás en páginas privadas, volver al index
+    if (pathEndsWithAny(currentPath, [
+      '../../pages/app/portal.html',
+      '../../pages/app/hogar.html',
+      '../../pages/app/perfil.html',
+      '../../pages/app/usuarios.html',
+      '../../pages/app/citas.html',
+      '../../pages/app/perros.html',
+      '../../pages/app/booking.html'
+    ])) {
+      location.href = './index.html';
     }
   });
 
@@ -233,7 +247,16 @@ function openAuthModal() {
       renderHeaderActions();
       modal.remove();
       const currentPath = location.pathname;
-      if (currentPath === '/pages/app/portal.html' || currentPath === '/pages/app/hogar.html' || currentPath === '/pages/app/perfil.html' || currentPath === '/pages/app/citas.html') location.reload();
+      // recargar si estamos en páginas privadas
+      if (pathEndsWithAny(currentPath, [
+        '../../pages/app/portal.html',
+        '../../pages/app/hogar.html',
+        '../../pages/app/perfil.html',
+        '../../pages/app/citas.html',
+        '../../pages/app/usuarios.html',
+        '../../pages/app/perros.html',
+        '../../pages/app/booking.html'
+      ])) location.reload();
     } catch (err) {
       await notify('error', 'Error: ' + err.message);
     }
@@ -309,7 +332,7 @@ async function renderHomeListado(searchText = '') {
       card.innerHTML = `
         <h3 class="text-xl font-bold text-accent">${escapeHtml(perro.nombre || 'Sin nombre')}</h3>
         <p class="text-gray-600">${escapeHtml(perro.raza || 'Sin raza')}</p>
-        <a class="inline-block mt-4 text-primary font-semibold" href="/pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
+        <a class="inline-block mt-4 text-primary font-semibold" href="pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
       `;
       list.appendChild(card);
     });
@@ -328,7 +351,7 @@ async function renderHogar() {
 
   const user = getUser();
   if (!user) {
-    container.innerHTML = `<div class="soft-card p-6 text-center">Para ver tus perros necesitas iniciar sesión. <br/><a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    container.innerHTML = `<div class="soft-card p-6 text-center">Para ver tus perros necesitas iniciar sesión. <br/><a href="pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
     return;
   }
 
@@ -375,7 +398,7 @@ function createPerroCard(perro) {
         <p class="text-gray-500 text-sm mt-2">${perro.fecha_de_nacimiento ? 'Nacido: ' + escapeHtml(perro.fecha_de_nacimiento) : ''} ${edad ? ' · ' + edad : ''}</p>
       </div>
       <div class="mt-4 flex gap-3">
-        <a class="px-4 py-2 rounded-lg border text-sm text-[var(--canem-primary)] hover:bg-[var(--canem-primary)] hover:text-white transition-colors" href="perros.html?id=${encodeURIComponent(perro.id)}">Gestionar</a>
+        <a class="px-4 py-2 rounded-lg border text-sm text-[var(--canem-primary)] hover:bg-[var(--canem-primary)] hover:text-white transition-colors" href="../../pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Gestionar</a>
         <button class="px-4 py-2 rounded-lg bg-red-600 text-white text-sm" data-id="${encodeURIComponent(perro.id)}">Eliminar</button>
       </div>
     </div>
@@ -455,7 +478,7 @@ function createCitaCard(cita, extraInfo = {}) {
         <div class="text-sm text-gray-500">${escapeHtml(extraInfo.usuarioEmail || '')}</div>
       </div>
       <div class="mt-3 flex gap-2">
-        <a class="px-3 py-2 rounded border text-sm text-[var(--canem-primary)]" href="booking.html?id=${encodeURIComponent(cita.id)}">Gestionar</a>
+        <a class="px-3 py-2 rounded border text-sm text-[var(--canem-primary)]" href="pages/app/booking.html?id=${encodeURIComponent(cita.id)}">Gestionar</a>
         <button class="px-3 py-2 rounded bg-red-600 text-white text-sm" data-id="${encodeURIComponent(cita.id)}">Eliminar</button>
       </div>
     </div>
@@ -499,7 +522,7 @@ async function renderCitas() {
 
   const user = getUser();
   if (!user) {
-    container.innerHTML = `<div class="soft-card p-6 text-center">Necesitas iniciar sesión para ver citas. <a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    container.innerHTML = `<div class="soft-card p-6 text-center">Necesitas iniciar sesión para ver citas. <a href="pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
     return;
   }
 
@@ -657,32 +680,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const path = location.pathname;
   const user = getUser();
-  const protectedPages = new Set(['/pages/app/hogar.html', '/pages/app/portal.html', '/pages/app/citas.html', '/pages/app/perfil.html', '/pages/app/perros.html', '/pages/app/booking.html', '/pages/app/usuarios.html']);
+  const protectedPaths = [
+    '../../pages/app/hogar.html',
+    '../../pages/app/portal.html',
+    '../../pages/app/citas.html',
+    '../../pages/app/perfil.html',
+    '../../pages/app/perros.html',
+    '../../pages/app/booking.html',
+    '../../pages/app/usuarios.html'
+  ];
 
-  if (protectedPages.has(path) && !user) {
-    location.href = '/pages/auth/login.html';
+  if (pathEndsWithAny(path, protectedPaths) && !user) {
+    location.href = '../../pages/auth/login.html';
     return;
   }
 
-  if (path === '/pages/app/usuarios.html' && !isAdminUser(user)) {
-    location.href = '/index.html';
+  if (pathEndsWithAny(path, ['../../pages/app/usuarios.html']) && !isAdminUser(user)) {
+    location.href = './index.html';
     return;
   }
 
-  if ((path === '/pages/auth/login.html' || path === '/pages/auth/register.html') && user) {
-    location.href = '/pages/app/portal.html';
+  if ((pathEndsWithAny(path, ['../../pages/auth/login.html', '../../pages/auth/register.html'])) && user) {
+    location.href = '../../pages/app/portal.html';
     return;
   }
 
-  if (path === '/pages/app/hogar.html' || path === '/pages/app/portal.html') {
+  if (pathEndsWithAny(path, ['../../pages/app/hogar.html', '../../pages/app/portal.html'])) {
     renderHogar();
-  } else if (path === '/pages/app/citas.html') {
+  } else if (pathEndsWithAny(path, ['../../pages/app/citas.html'])) {
     renderCitas();
-  } else if (path === '/pages/app/usuarios.html') {
+  } else if (pathEndsWithAny(path, ['../../pages/app/usuarios.html'])) {
     renderUsuarios();
-  } else if (path === '/pages/app/perfil.html') {
+  } else if (pathEndsWithAny(path, ['../../pages/app/perfil.html'])) {
     renderPerfilPage();
-  } else if (path === '/' || path === '/index.html') {
+  } else if (path === '/' || path.endsWith('./index.html')) {
     renderHomeListado();
     const searchInput = document.getElementById('home-search');
     if (searchInput) {
@@ -703,7 +734,7 @@ function renderPerfilPage() {
   if (!el) return;
   const user = getUser();
   if (!user) {
-    el.innerHTML = `<div class="soft-card p-6 text-center">Para ver tu perfil, inicia sesión. <br/><a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    el.innerHTML = `<div class="soft-card p-6 text-center">Para ver tu perfil, inicia sesión. <br/><a href="../../pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
     return;
   }
   el.innerHTML = `
@@ -716,15 +747,12 @@ function renderPerfilPage() {
         <p><strong>Rol:</strong> ${isAdminUser(user) ? 'Admin' : 'Cliente'}</p>
       </div>
       <div class="mt-6 flex gap-3">
-        <a href="/pages/auth/register.html" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Actualizar datos</a>
+        <a href="pages/auth/register.html" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Actualizar datos</a>
         <button id="perfil-logout" class="px-4 py-2 rounded bg-gray-100">Cerrar sesión</button>
       </div>
     </div>
   `;
   document.getElementById('perfil-logout').addEventListener('click', () => {
-    clearToken(); clearUser(); renderHeaderActions(); location.href = '/index.html';
+    clearToken(); clearUser(); renderHeaderActions(); location.href = './index.html';
   });
 }
-
-
-

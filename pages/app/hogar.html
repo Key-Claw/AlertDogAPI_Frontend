@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hogar - Canem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+    <style>
+      :root { --canem-primary: #357ABD; }
+      .soft-card { background: white; border-radius: 1rem; box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+      .soft-input { border: 1px solid #E6E9EE; border-radius: 0.75rem; background: #FBFBFD; }
+      .soft-btn { background: var(--canem-primary); color: white; border-radius: 1rem; padding: 0.85rem 1.25rem; display:inline-block; text-align:center; }
+    </style>
+  </head>
+
+  <body class="font-body antialiased bg-gray-50 text-gray-700">
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-white/20">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <a class="flex items-center gap-3 group" href="/index.html">
+            <img src="/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+            <span class="text-2xl font-bold text-accent tracking-tight group-hover:text-primary transition-colors">Canem</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-8">
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/index.html">Inicio</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/about.html">Conócenos</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a>
+          </nav>
+
+          <div id="header-actions" class="hidden md:flex items-center gap-4" aria-live="polite"></div>
+
+          <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white text-accent flex items-center justify-center shadow-sm" aria-expanded="false" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden mt-4 bg-white rounded-xl p-6 shadow-lg" aria-hidden="true">
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/index.html">Inicio</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/services.html">Servicios</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/about.html">Conócenos</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/contact.html">Contacto</a>
+
+          <div id="mobile-header-actions" class="mt-4"></div>
+
+          <a class="block mt-4 py-2 text-center rounded-xl bg-white text-primary font-bold border" href="/pages/app/booking.html">Pedir cita</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-28 pb-12">
+      <div class="container mx-auto px-6">
+        <div class="mb-8">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-accent">Hogar</h1>
+          <p class="text-gray-600 mt-2">Aquí verás todos tus perros registrados. Añade, revisa o elimina según necesites.</p>
+        </div>
+
+        <!-- Contenedor de perros -->
+        <div id="hogar-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- cards generadas por JS -->
+        </div>
+
+        <!-- Mensaje cuando no hay perros -->
+        <div id="hogar-empty" class="hidden text-center py-12">
+          <p class="text-gray-600 text-lg">No tienes ningún perro.</p>
+        </div>
+
+
+<div class="mt-10 text-center">
+  <a href="/pages/app/perros.html" class="soft-btn inline-flex items-center gap-3">
+    <i class="fas fa-plus"></i> Agregar nuevo perro
+  </a>
+</div>
+      </div>
+    </main>
+
+    <footer class="bg-[#F9F9F9] pt-20 pb-10 border-t border-white/50 mt-12">
+      <div class="container mx-auto px-6">
+        <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-gray-500 text-sm">© <span id="year"></span> Canem. Todos los derechos reservados.</p>
+          <div class="flex gap-6">
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Política de privacidad</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Términos y condiciones</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script type="module" defer src="/assets/js/scripts.js"></script>
+  </body>
+</html>
+
+
+
+
+
+

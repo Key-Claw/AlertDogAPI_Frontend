@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Citas - Canem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/assets/css/style.css" rel="stylesheet"/>
+    <style>.soft-card{background:white;border-radius:1rem;box-shadow:0 8px 24px rgba(15,23,42,0.06)}</style>
+  </head>
+  <body class="font-body antialiased bg-gray-50 text-gray-700">
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur border-b">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <a class="flex items-center gap-3" href="/index.html">
+          <img src="/favicon.jpeg" alt="Canem" class="w-10 h-10 rounded-xl object-cover"/>
+          <span class="text-2xl font-bold text-accent">Canem</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="/index.html" class="font-medium hover:text-primary">Inicio</a>
+          <a href="/pages/app/hogar.html" class="font-medium hover:text-primary">Hogar</a>
+          <a href="/pages/app/perfil.html" class="font-medium hover:text-primary">Perfil</a>
+        </nav>
+        <div id="header-actions" class="hidden md:flex items-center gap-4"></div>
+        <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="pt-28">
+      <div class="container mx-auto px-6">
+        <div class="mb-6 flex items-center justify-between gap-4 flex-wrap">
+          <h1 class="text-3xl font-extrabold text-accent">Citas</h1>
+          <a href="/pages/app/booking.html" class="px-4 py-2 rounded-xl bg-primary text-white font-semibold">Registrar cita</a>
+        </div>
+
+        <div id="citas-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <div id="citas-empty" class="hidden mt-6 text-center text-gray-600">No hay citas.</div>
+      </div>
+    </main>
+
+    <footer class="bg-white border-t mt-12">
+      <div class="container mx-auto px-6 py-6 text-gray-500">
+        © <span id="year"></span> Canem
+      </div>
+    </footer>
+
+    <script type="module" defer src="/assets/js/scripts.js"></script>
+  </body>
+</html>
+
+
+
+
+
+

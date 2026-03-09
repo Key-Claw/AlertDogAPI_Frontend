@@ -1,104 +1,87 @@
-# AlertDogAPI_Frontend
+# AlertDogAPI Frontend
 
-Frontend de AlertDogAPI construido con React, Vite y TailwindCSS para gestionar:
+[![Frontend CI](https://github.com/Key-Claw/AlertDogAPI_Frontend/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Key-Claw/AlertDogAPI_Frontend/actions/workflows/frontend-ci.yml)
 
-- Usuarios
-- Perros de alerta
-- Citas
+Frontend de AlertDog para gestionar:
+- autenticacion local (contra API de usuarios)
+- usuarios
+- perros de alerta
+- citas
 
-## Tecnologias usadas
+## Estado actual (Marzo 2026)
+- Frontend consolidado como sitio multipagina (`pages/` + `assets/`).
+- Se eliminaron capas y archivos duplicados que no participaban en el flujo principal.
+- `assets/js/scripts.js` se carga como modulo para evitar warnings de build en Vite.
 
+## Que contiene este repositorio
+Incluye una capa frontend multipagina:
+- `pages/` + `assets/` HTML multipagina con JS global para flujos operativos.
+
+Tambien incluye CI en GitHub Actions para validar build y rutas criticas.
+
+## Tecnologias
 ### Core
+- Vite
 
-- React 18 (componentes funcionales + hooks)
-- React Router DOM (navegacion)
-- Vite (build tool y dev server)
+### Integracion backend
+- Fetch API
+- Base esperada del backend: `http://localhost:3000`
+- Recursos consumidos: `/usuarios`, `/perros`, `/citas`
 
-### Estilos
+## Estructura principal
+```text
+pages/                 # HTML multipagina (auth/public/app)
+assets/
+  js/scripts.js        # logica global de sesion y operaciones
+  css/style.css        # estilos base
 
-- TailwindCSS 3
-- PostCSS
-- Autoprefixer
+.github/workflows/
+  frontend-ci.yml      # pipeline CI del frontend
+```
 
-### Comunicacion con backend
-
-- Fetch API (cliente propio en `src/api/apiClient.js`)
-- API REST backend (Node/Express) en endpoints:
-	- `/usuarios`
-	- `/perros`
-	- `/citas`
-
-## Arquitectura y organizacion
-
-La app sigue una estructura modular orientada a capas:
-
-- `src/api`
-	- Encapsula llamadas HTTP por dominio (`usuariosApi`, `perrosApi`, `citasApi`).
-	- `apiClient.js` centraliza base URL, parseo de respuesta y manejo de errores.
-
-- `src/hooks`
-	- Hooks de dominio (`useUsuarios`, `usePerros`, `useCitas`) para carga y CRUD.
-	- `useApi` estandariza `loading` + `error` para llamadas async.
-
-- `src/pages`
-	- Pantallas completas de cada modulo.
-	- Componen UI + hooks de dominio.
-
-- `src/components`
-	- `layout`: estructura general (`AppLayout`, `Navbar`, `Sidebar`).
-	- `common`: componentes reutilizables (`Button`, `Table`, `Modal`, etc.).
-	- `usuarios/perros/citas`: formularios y tablas de cada entidad.
-
-- `src/routes`
-	- Configuracion de React Router.
-
-- `src/utils`
-	- Helpers puros (`formatDate`, `validators`, `httpErrors`, `constants`).
-
-- `src/context`
-	- Estado global compartido (ejemplo: control de sidebar).
-
-- `src/assets`
-	- Recursos visuales de marca y fondos.
-
-## Flujo de datos
-
-1. Una pagina invoca un hook de dominio (`useUsuarios`, por ejemplo).
-2. El hook usa su modulo `api/*` para ejecutar la operacion REST.
-3. El resultado actualiza estado local del hook (`usuarios`, `loading`, `error`).
-4. La pagina renderiza componentes UI segun ese estado.
-
-## Variables de entorno
-
-Archivo: `.env`
-
-- `VITE_API_URL=http://localhost:3000`
-
-Opcionalmente se admite `VITE_API_BASE_URL`.
-
-## Scripts disponibles
-
-- `npm run dev`
-	- Levanta el servidor de desarrollo.
-
-- `npm run build`
-	- Genera el build de produccion en `dist/`.
-
-- `npm run preview`
-	- Sirve localmente el contenido generado en `dist/`.
+## Scripts npm
+- `npm run dev`: servidor de desarrollo (Vite).
+- `npm run build`: build de produccion en `dist/`.
+- `npm run preview`: servir build de `dist/` localmente.
 
 ## Ejecucion local
-
 1. Instalar dependencias:
-	 - `npm install`
-2. Arrancar desarrollo:
-	 - `npm run dev`
-3. Abrir URL local mostrada por Vite (ejemplo: `http://127.0.0.1:5173/`).
+```bash
+npm install
+```
+2. Levantar frontend:
+```bash
+npm run dev
+```
+3. Abrir URL mostrada por Vite (ej. `http://127.0.0.1:5173/`).
+
+Nota: para funcionalidades completas, backend y DB deben estar arriba.
+
+## CI (GitHub Actions)
+Workflow: `.github/workflows/frontend-ci.yml`
+
+Se ejecuta en:
+- `push` a `main`, `dev`, `feature/**`
+- `pull_request` a `main` y `dev`
+- ejecucion manual (`workflow_dispatch`)
+
+Que valida el pipeline:
+1. Instalacion (`npm ci`).
+2. Build de produccion (`npm run build`).
+3. Arranque de Vite en CI.
+4. Smoke checks HTTP a rutas clave:
+   - `/`
+   - `/pages/auth/login.html`
+   - `/pages/auth/register.html`
+   - `/pages/public/about.html`
+   - `/pages/public/contact.html`
+   - `/pages/public/services.html`
+
+Si falla, imprime `frontend.log` para diagnostico.
 
 ## Buenas practicas aplicadas
-
-- Componentes funcionales + hooks.
-- Separacion de responsabilidades por capas.
-- Reutilizacion de componentes comunes.
-- Manejo centralizado de errores HTTP.
-- Estilos consistentes con Tailwind y tema visual de marca.
+- Estructura multipagina clara por dominio (public/auth/app).
+- Reutilizacion de estilos y logica global de sesion.
+- Validaciones de formulario en flujos auth/perros/citas.
+- Integracion backend real para operaciones CRUD.
+- Verificacion automatica en CI.

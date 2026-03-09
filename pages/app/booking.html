@@ -124,7 +124,13 @@ feedback.textContent=text;
 
 async function loadPerros(){
 
-const user=JSON.parse(localStorage.getItem("canem_user"));
+const user = window.canemGetUser ? window.canemGetUser() : (() => {
+  try {
+    return JSON.parse(localStorage.getItem("canem_user") || 'null');
+  } catch (_) {
+    return null;
+  }
+})();
 
 const isAdmin = user && (user.rol === 1 || user.rol === '1' || user.rol === true);
 
@@ -232,10 +238,21 @@ headers:{'Content-Type':'application/json'},
 body:JSON.stringify(payload)
 });
 
+let responseData = null;
+try {
+  responseData = await res.json();
+} catch (_) {
+  responseData = null;
+}
+
 if(!res.ok){
-showFeedback("No se pudo crear la cita","error");
-await Swal.fire({ icon: 'error', text: 'No se pudo crear la cita' });
-return;
+  const fallbackMsg = citaId ? 'No se pudo actualizar la cita' : 'No se pudo crear la cita';
+  const msg = window.canemGetApiErrorMessage
+    ? window.canemGetApiErrorMessage(responseData, fallbackMsg)
+    : fallbackMsg;
+  showFeedback(msg,"error");
+  await Swal.fire({ icon: 'error', text: msg });
+  return;
 }
 
 showFeedback(citaId ? "Cita actualizada correctamente" : "Cita creada correctamente","success");
@@ -250,8 +267,9 @@ setTimeout(()=>location.href="/pages/app/citas.html",1000);
 
 }catch(err){
 
-showFeedback("Error conectando con el servidor","error");
-await Swal.fire({ icon:'error', text:'Error conectando con el servidor' });
+const msg = err?.message || "Error conectando con el servidor";
+showFeedback(msg,"error");
+await Swal.fire({ icon:'error', text: msg });
 
 }
 

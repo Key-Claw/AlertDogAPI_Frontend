@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 
 export default defineConfig({
+  publicDir: 'public_static',
   build: {
     // Build every HTML page used by public/auth/app navigation.
     rollupOptions: {

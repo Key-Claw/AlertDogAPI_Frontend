@@ -146,8 +146,13 @@
         const query = new URLSearchParams(location.search);
         const editingId = query.get('id');
 
-        const rawUser = localStorage.getItem('canem_user');
-        const currentUser = rawUser ? JSON.parse(rawUser) : null;
+        const currentUser = window.canemGetUser ? window.canemGetUser() : (() => {
+          try {
+            return JSON.parse(localStorage.getItem('canem_user') || 'null');
+          } catch (_) {
+            return null;
+          }
+        })();
         const isAdmin = currentUser && (currentUser.rol === 1 || currentUser.rol === '1' || currentUser.rol === true);
         if (!currentUser || !currentUser.id) {
           status.textContent = 'Debes iniciar sesión para registrar un perro.';
@@ -253,7 +258,9 @@
             try { data = await res.json(); } catch (e) {}
 
             if (!res.ok) {
-              const msg = data?.error || data?.message || 'Error al añadir el perro.';
+              const msg = window.canemGetApiErrorMessage
+                ? window.canemGetApiErrorMessage(data, 'Error al guardar el perro.')
+                : (data?.error || data?.message || 'Error al guardar el perro.');
               throw new Error(msg);
             }
 

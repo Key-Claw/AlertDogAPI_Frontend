@@ -633,14 +633,19 @@ async function deleteUsuarioById(id) {
   return true;
 }
 
-function createUsuarioRow(usuario) {
+function createUsuarioRow(usuario, perrosPorUsuario = new Map()) {
   const tr = document.createElement('tr');
   const sessionUser = getUser();
   const isCurrentUser = Number(sessionUser?.id) === Number(usuario.id);
+  const perrosUsuario = perrosPorUsuario.get(Number(usuario.id)) || [];
+  const perrosLabel = perrosUsuario.length
+    ? perrosUsuario.map((p) => escapeHtml(p.nombre || `#${p.id}`)).join(', ')
+    : 'Sin perros';
   tr.innerHTML = `
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.id)}</td>
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.nombre)} ${escapeHtml(usuario.apellido)}</td>
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.email)}</td>
+    <td class="px-4 py-2 border-b">${perrosLabel}</td>
     <td class="px-4 py-2 border-b">${isAdminUser(usuario) ? 'Admin' : 'Cliente'}</td>
     <td class="px-4 py-2 border-b">
       <button class="px-3 py-1 rounded bg-yellow-500 text-white btn-toggle-role" data-id="${encodeURIComponent(usuario.id)}">Cambiar rol</button>
@@ -708,8 +713,17 @@ async function renderUsuarios() {
       if (emptyBox) emptyBox.classList.remove('hidden');
       return;
     }
+
+    const perros = await getPerrosAll().catch(() => []);
+    const perrosPorUsuario = new Map();
+    (perros || []).forEach((perro) => {
+      const ownerId = Number(perro.id_usuario);
+      if (!perrosPorUsuario.has(ownerId)) perrosPorUsuario.set(ownerId, []);
+      perrosPorUsuario.get(ownerId).push(perro);
+    });
+
     usuarios.forEach(u => {
-      container.appendChild(createUsuarioRow(u));
+      container.appendChild(createUsuarioRow(u, perrosPorUsuario));
     });
   } catch (err) {
     container.parentElement.innerHTML = `<div class="soft-card p-6 text-center text-red-600">No se pudieron cargar los usuarios.</div>`;

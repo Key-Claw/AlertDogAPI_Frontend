@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pedir cita - Canem</title>
+
+<script type="module" src="/assets/js/tailwind.config.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="/assets/js/scripts.js"></script>
+
+
+<!-- FLATPICKR -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link href="/assets/css/style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+</head>
+
+<body class="font-body antialiased bg-gray-50 text-gray-700">
+
+<!-- Header -->
+<header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur border-b border-white/20">
+  <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+    <a class="flex items-center gap-3 group" href="/pages/public/index.html">
+      <img src="/public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+      <span class="text-2xl font-bold text-gray-900">Canem</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/index.html">Inicio</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/about.html">Conócenos</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a>
+    </nav>
+
+    <div class="hidden md:flex items-center gap-4" id="header-actions">
+      <!-- Header actions will be rendered here -->
+    </div>
+
+    <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden px-6 pb-6">
+    <div id="mobile-header-actions">
+      <!-- Mobile header actions will be rendered here -->
+    </div>
+  </div>
+</header>
+
+<main class="pt-28">
+
+<section class="py-16 px-6">
+<div class="container mx-auto max-w-2xl">
+
+<div class="soft-card p-8 md:p-12">
+
+<h1 class="text-2xl md:text-3xl font-extrabold mb-4">Pedir cita</h1>
+<p class="text-gray-600 mb-6">Selecciona perro, fecha y hora.</p>
+
+<form id="bookingForm" class="space-y-6">
+
+<div>
+<label class="block text-gray-600 mb-2 font-semibold" id="label-perro">Perro</label>
+<select id="select-perro" class="soft-input w-full px-4 py-3" required>
+<option value="">Cargando perros...</option>
+</select>
+</div>
+
+<div>
+<label class="block text-gray-600 mb-2 font-semibold">Fecha</label>
+<input id="input-fecha" class="soft-input w-full px-4 py-3" type="text" placeholder="Selecciona una fecha" required/>
+</div>
+
+<div>
+<label class="block text-gray-600 mb-2 font-semibold">Hora</label>
+<select id="input-hora" class="soft-input w-full px-4 py-3" required>
+<option value="">Selecciona una hora</option>
+</select>
+</div>
+
+<div id="booking-feedback" class="hidden p-3 rounded text-sm"></div>
+
+<button class="soft-btn w-full text-lg" type="submit">
+Solicitar cita
+</button>
+
+</form>
+</div>
+</div>
+</section>
+
+</main>
+
+<script>
+
+const API_BASE = 'http://localhost:3000';
+
+const selectPerro=document.getElementById('select-perro');
+const inputHora=document.getElementById('input-hora');
+const bookingForm=document.getElementById('bookingForm');
+const feedback=document.getElementById('booking-feedback');
+const params = new URLSearchParams(location.search);
+const citaId = params.get('id');
+
+function showFeedback(text,type){
+
+feedback.classList.remove("hidden");
+
+if(type==="error")
+feedback.className="p-3 rounded text-sm bg-red-100 text-red-700";
+else
+feedback.className="p-3 rounded text-sm bg-green-100 text-green-700";
+
+feedback.textContent=text;
+
+}
+
+async function loadPerros(){
+
+const user = window.canemGetUser ? window.canemGetUser() : (() => {
+  try {
+    return JSON.parse(localStorage.getItem("canem_user") || 'null');
+  } catch (_) {
+    return null;
+  }
+})();
+
+const isAdmin = user && (user.rol === 1 || user.rol === '1' || user.rol === true);
+
+if(!user || !user.id){
+showFeedback("Debes iniciar sesión para pedir una cita","error");
+selectPerro.innerHTML='<option value="">Inicia sesión para continuar</option>';
+return;
+}
+
+const labelPerro = document.getElementById('label-perro');
+if(labelPerro) labelPerro.textContent = isAdmin ? 'Perro (todos)' : 'Tu perro';
+
+try{
+
+const res=await fetch(API_BASE+"/perros");
+const all=await res.json();
+
+const perros = isAdmin
+	? all
+	: all.filter(p=>Number(p.id_usuario)===Number(user.id));
+
+selectPerro.innerHTML='<option value="">Selecciona un perro</option>';
+
+perros.forEach(p=>{
+const opt=document.createElement("option");
+opt.value=p.id;
+opt.textContent=p.nombre+" - "+(p.raza||"sin raza");
+selectPerro.appendChild(opt);
+});
+
+if(perros.length===0){
+showFeedback('No hay perros disponibles para agendar citas.','error');
+}
+
+}catch(err){
+console.error(err);
+}
+
+}
+
+function generarHoras(fecha){
+
+inputHora.innerHTML='<option value="">Selecciona una hora</option>';
+
+const dia=new Date(fecha).getDay();
+
+let horas=[];
+
+if(dia===6){
+
+horas=[
+"11:00 - 12:00",
+"12:00 - 13:00",
+"13:00 - 14:00"
+];
+
+}else{
+
+horas=[
+"11:00 - 12:00",
+"12:00 - 13:00",
+"13:00 - 14:00",
+"16:00 - 17:00",
+"17:00 - 18:00",
+"18:00 - 19:00"
+];
+
+}
+
+horas.forEach(h=>{
+const opt=document.createElement("option");
+opt.value=h.split(" - ")[0];
+opt.textContent=h;
+inputHora.appendChild(opt);
+});
+
+}
+
+async function handleSubmit(e){
+
+e.preventDefault();
+
+const idPerro=selectPerro.value;
+const fecha=document.getElementById("input-fecha").value;
+const hora=inputHora.value;
+
+if(!idPerro||!fecha||!hora){
+showFeedback("Completa todos los campos","error");
+return;
+}
+
+try{
+
+const payload={
+fecha,
+hora:hora+":00",
+id_perro:Number(idPerro)
+};
+
+const url = citaId ? `${API_BASE}/citas/${citaId}` : API_BASE+"/citas";
+const method = citaId ? "PUT" : "POST";
+const res=await fetch(url,{
+method,
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify(payload)
+});
+
+let responseData = null;
+try {
+  responseData = await res.json();
+} catch (_) {
+  responseData = null;
+}
+
+if(!res.ok){
+  const fallbackMsg = citaId ? 'No se pudo actualizar la cita' : 'No se pudo crear la cita';
+  const msg = window.canemGetApiErrorMessage
+    ? window.canemGetApiErrorMessage(responseData, fallbackMsg)
+    : fallbackMsg;
+  showFeedback(msg,"error");
+  await Swal.fire({ icon: 'error', text: msg });
+  return;
+}
+
+showFeedback(citaId ? "Cita actualizada correctamente" : "Cita creada correctamente","success");
+await Swal.fire({
+icon:'success',
+text:citaId ? 'Cita actualizada correctamente' : 'Cita creada correctamente',
+timer:1200,
+showConfirmButton:false
+});
+
+setTimeout(()=>location.href="/pages/app/citas.html",1000);
+
+}catch(err){
+
+const msg = err?.message || "Error conectando con el servidor";
+showFeedback(msg,"error");
+await Swal.fire({ icon:'error', text: msg });
+
+}
+
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadPerros();
+
+flatpickr("#input-fecha",{
+
+dateFormat:"Y-m-d",
+minDate:"today",
+
+disable:[
+function(date){
+return (date.getDay()===0);
+}
+],
+
+onChange:function(selectedDates,dateStr){
+generarHoras(dateStr);
+}
+
+});
+
+bookingForm.addEventListener("submit",handleSubmit);
+
+if (citaId) {
+	(async () => {
+		try {
+			const res = await fetch(`${API_BASE}/citas/${citaId}`);
+			if (!res.ok) throw new Error('No se pudo cargar la cita');
+			const cita = await res.json();
+
+			document.querySelector('h1').textContent = 'Editar cita';
+			document.querySelector('button[type="submit"]').textContent = 'Guardar cambios';
+			document.getElementById('input-fecha').value = cita.fecha;
+			generarHoras(cita.fecha);
+			inputHora.value = String(cita.hora || '').slice(0, 5);
+			await loadPerros();
+			selectPerro.value = String(cita.id_perro);
+		} catch (err) {
+			showFeedback(err.message, 'error');
+		}
+	})();
+}
+
+});
+
+// mobile menu toggle
+const btn = document.getElementById('mobile-menu-toggle');
+const menu = document.getElementById('mobile-menu');
+if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+// render header actions
+if (window.renderHeaderActions) renderHeaderActions();
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

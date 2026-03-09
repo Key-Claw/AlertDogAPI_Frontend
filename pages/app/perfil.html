@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Perfil - Canem</title>
+    <script type="module" src="/assets/js/tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/assets/css/style.css" rel="stylesheet"/>
+    <script defer src="/assets/js/scripts.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  </head>
+  <body class="font-body antialiased bg-gray-50 text-gray-700 min-h-screen flex flex-col">
+    <!-- Header: igual que en el resto -->
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur border-b">
+      <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <a class="flex items-center gap-3" href="/pages/public/index.html">
+          <img src="/public/favicon.jpeg" alt="Canem" class="w-10 h-10 rounded-xl object-cover"/>
+          <span class="text-2xl font-bold text-accent">Canem</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="/pages/public/index.html" class="font-medium hover:text-primary">Inicio</a>
+          <a href="/pages/public/services.html" class="font-medium hover:text-primary">Servicios</a>
+          <a href="/pages/public/about.html" class="font-medium hover:text-primary">Conócenos</a>
+          <a href="/pages/public/contact.html" class="font-medium hover:text-primary">Contacto</a>
+        </nav>
+        <div class="hidden md:flex items-center gap-4" id="header-actions">
+          <!-- Header actions will be rendered here -->
+        </div>
+      <!-- Mobile Toggle -->
+      <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white text-accent flex items-center justify-center shadow-sm" aria-expanded="false" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      </div>
+      <div id="mobile-menu" class="hidden px-6 pb-6">
+        <div id="mobile-header-actions">
+          <!-- Mobile header actions will be rendered here -->
+        </div>
+        <a class="block py-2" href="/pages/public/index.html">Inicio</a>
+        <a class="block py-2" href="/pages/public/services.html">Servicios</a>
+        <a class="block py-2" href="/pages/public/about.html">Conócenos</a>
+        <a class="block py-2" href="/pages/public/contact.html">Contacto</a>
+      </div>
+    </header>
+
+    <main class="pt-28 flex-grow">
+      <div class="container mx-auto px-6 max-w-3xl">
+        <h1 class="text-3xl font-extrabold text-accent mb-6">Perfil</h1>
+        <div id="perfil-container"></div>
+      </div>
+    </main>
+
+    <footer class="bg-[#F9F9F9] pt-16 pb-16 border-t border-white/50">
+      <div class="container mx-auto px-6">
+        <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-gray-500 text-sm">© <span id="year"></span> Canem. Todos los derechos reservados.</p>
+          <div class="flex gap-6">
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Política de privacidad</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Términos y condiciones</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      // año
+      const y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
+
+      // mobile menu toggle
+      const btn = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+      // render header actions
+      if (window.renderHeaderActions) renderHeaderActions();
+    </script>
+  </body>
+</html>
+
+

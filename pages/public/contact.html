@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Contacto - Canem</title>
+    <meta content="Contacto Canem - adiestramiento perros de alerta médica" name="description"/>
+    <script type="module" src="../../assets/js/tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="../../assets/css/style.css" rel="stylesheet"/>
+    <script type="module" defer src="../../assets/js/scripts.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  </head>
+  <body class="font-body">
+
+    <!-- Header -->
+<header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-white/20">
+  <div class="container mx-auto px-6 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a class="flex items-center gap-3 group" href="index.html">
+        <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+        <span class="text-2xl font-bold text-accent tracking-tight group-hover:text-primary transition-colors">Canem</span>
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./index.html">Inicio</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./services.html">Servicios</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./about.html">Sobre nosotros</a>
+        <a class="text-accent font-medium hover:text-primary transition-colors" href="./contact.html">Contacto</a>
+      </nav>
+
+      <!-- Action Buttons (inyectados por JS) -->
+      <div id="header-actions" class="hidden md:flex items-center gap-4" aria-live="polite"></div>
+
+      <!-- Mobile Toggle -->
+      <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white text-accent flex items-center justify-center shadow-sm" aria-expanded="false" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 bg-white rounded-xl p-6 shadow-lg" aria-hidden="true">
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./index.html">Inicio</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./services.html">Servicios</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./about.html">Sobre nosotros</a>
+      <a class="block py-2 text-accent font-medium hover:text-primary" href="./contact.html">Contacto</a>
+
+      <!-- Contenedor móvil para acciones que inyecte JS (login / tus perros / pedir cita / logout) -->
+      <div id="mobile-header-actions" class="mt-4"></div>
+
+    </div>
+  </div>
+</header>
+
+    <!-- Contacto -->
+    <section id="contacto" class="pt-32 pb-12 px-6 text-center">
+      <div class="container mx-auto max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold text-accent mb-6">Contacto</h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Estamos aquí para ayudarte con tus dudas y para gestionar citas o videollamadas. Escríbenos y te contestaremos lo antes posible.
+        </p>
+      </div>
+    </section>
+
+    <!-- Información de contacto y formulario -->
+    <section id="informacion_contacto" class="pb-20 px-6">
+      <div class="container mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+          <!-- Información de contacto & mapa -->
+          <div class="space-y-8">
+            <div class="soft-card p-8">
+              <h2 class="text-2xl font-bold text-accent mb-6">Información de contacto</h2>
+              <ul class="space-y-6">
+                <li class="flex items-start gap-4">
+                  <div class="w-12 h-12 rounded-full bg-[#E3F2FD] text-primary flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-accent">Dirección</h3>
+                    <p class="text-gray-600">C. de Manuel Lorenzo Pardo, 17, 50008 Zaragoza</p>
+                  </div>
+                </li>
+
+                <li class="flex items-start gap-4">
+                  <div class="w-12 h-12 rounded-full bg-[#E8F5E9] text-[#66BB6A] flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-accent">Teléfono</h3>
+                    <p class="text-gray-600">Principal: (555) 123-4567</p>
+                  </div>
+                </li>
+
+                <li class="flex items-start gap-4">
+                  <div class="w-12 h-12 rounded-full bg-[#FFF0F0] text-[#FF8A80] flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-accent">Correo</h3>
+                    <p class="text-gray-600">hola@canem.com</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Mapa: Canem, Zaragoza -->
+            <div class="soft-card p-4 h-[300px] relative overflow-hidden">
+              <iframe
+                width="100%"
+                height="100%"
+                style="border:0; border-radius:16px;"
+                loading="lazy"
+                src="https://maps.google.com/maps?q=C.%20de%20Manuel%20Lorenzo%20Pardo%2017%20Zaragoza&t=&z=16&ie=UTF8&iwloc=&output=embed">
+              </iframe>
+            </div>
+          </div>
+
+          <!-- Formulario  -->
+          <div class="soft-card p-8 md:p-12">
+            <h2 class="text-2xl font-bold text-accent mb-6">Envíanos un mensaje</h2>
+            <form id="contactForm" class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-600 mb-2 font-semibold">Nombre</label>
+                  <input id="nombre" class="soft-input w-full px-4 py-3" placeholder="Nombre" type="text" required/>
+                </div>
+                <div>
+                  <label class="block text-gray-600 mb-2 font-semibold">Apellidos</label>
+                  <input id="apellidos" class="soft-input w-full px-4 py-3" placeholder="Apellidos" type="text" required/>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-600 mb-2 font-semibold">Correo electrónico</label>
+                <input id="email" class="soft-input w-full px-4 py-3" placeholder="tu@correo.com" type="email" required/>
+              </div>
+
+              <div>
+                <label class="block text-gray-600 mb-2 font-semibold">Teléfono</label>
+                <input id="telefono" class="soft-input w-full px-4 py-3" placeholder="Ej. 600 123 456" type="tel"/>
+              </div>
+
+              <div>
+                <label class="block text-gray-600 mb-2 font-semibold">Mensaje</label>
+                <textarea id="mensaje" class="soft-input w-full px-4 py-3 h-32 resize-none" placeholder="¿En qué podemos ayudarte?" required></textarea>
+              </div>
+
+              <button id="sendBtn" class="soft-btn soft-btn-primary w-full py-4 font-bold text-lg rounded-lg" type="button">Enviar mensaje</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+        <!-- Footer -->
+    <footer class="bg-[#F9F9F9] pt-20 pb-10 border-t border-white/50">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          <!-- (footer content igual que en otras páginas) -->
+          <div>
+            <a class="flex items-center gap-2 mb-6" href="index.html">
+              <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-8 h-8 rounded-lg object-cover shadow-sm" />
+              <span class="text-xl font-bold text-accent">Canem</span>
+            </a>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              Cuidado compasivo y entrenamiento especializado para tu perro.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold text-accent mb-6">Enlaces rápidos</h3>
+            <ul class="space-y-4">
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./index.html">Inicio</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./services.html">Servicios</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./about.html">Sobre nosotros</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="./contact.html">Contacto</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold text-accent mb-6">Servicios</h3>
+            <ul class="space-y-4">
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="../public/services.html">Entrevista inicial</a></li>
+              <li><a class="text-gray-600 hover:text-primary transition-colors" href="../public/services.html">Plan personalizado</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold text-accent mb-6">Contacto</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-primary mt-1"></i>
+                <span class="text-gray-600">C. de Manuel Lorenzo Pardo, 17, 50008 Zaragoza</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-phone text-primary"></i>
+                <a class="text-gray-600 hover:text-primary transition-colors" href="tel:+15551234567">(555) 123-4567</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-gray-500 text-sm">© <span id="year"></span> Canem. Todos los derechos reservados.</p>
+          <div class="flex gap-6">
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="../public/contact.html">Política de privacidad</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="../public/contact.html">Términos y condiciones</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+

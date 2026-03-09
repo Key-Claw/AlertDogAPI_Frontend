@@ -1,0 +1,88 @@
+name: Frontend CI
+
+on:
+  # Permite lanzar el workflow manualmente desde Actions.
+  workflow_dispatch:
+
+  # Se ejecuta en pushes a ramas habituales del proyecto.
+  push:
+    branches:
+      - main
+      - dev
+      - "feature/**"
+
+  # Se ejecuta en PR para validar antes de merge.
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Descargar el código.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2) Configurar Node.js y caché de npm.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3) Instalar dependencias.
+      - name: Install dependencies
+        run: npm ci
+
+      # 4) Verificar que el frontend compila en modo producción.
+      - name: Build frontend
+        run: npm run build
+
+      # 5) Levantar Vite para smoke checks HTTP.
+      - name: Start frontend dev server
+        run: |
+          npm run dev -- --host 0.0.0.0 --port 5173 > frontend.log 2>&1 &
+          echo $! > frontend.pid
+
+      # 6) Esperar hasta que el servidor esté listo.
+      - name: Wait for frontend to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:5173/ > /dev/null; then
+              echo "Frontend is ready"
+              exit 0
+            fi
+            echo "Waiting for frontend..."
+            sleep 2
+          done
+          echo "Frontend did not start in time"
+          cat frontend.log
+          exit 1
+
+      # 7) Comprobar que rutas críticas responden correctamente.
+      - name: Run frontend smoke checks
+        run: |
+          curl -fsS http://localhost:5173/ > /dev/null
+          curl -fsS http://localhost:5173/pages/auth/login.html > /dev/null
+          curl -fsS http://localhost:5173/pages/auth/register.html > /dev/null
+          curl -fsS http://localhost:5173/pages/public/about.html > /dev/null
+          curl -fsS http://localhost:5173/pages/public/contact.html > /dev/null
+          curl -fsS http://localhost:5173/pages/public/services.html > /dev/null
+
+      # Logs de ayuda si algo falla.
+      - name: Show frontend logs on failure
+        if: failure()
+        run: |
+          echo "===== frontend.log ====="
+          cat frontend.log
+
+      # Limpieza del proceso de Vite.
+      - name: Stop frontend
+        if: always()
+        run: |
+          if [ -f frontend.pid ]; then
+            kill $(cat frontend.pid) || true
+          fi

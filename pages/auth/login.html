@@ -87,12 +87,8 @@
     </footer>
 
     <script>
-      // Si el usuario ya está logueado, redirigir al portal
       document.addEventListener('DOMContentLoaded', () => {
-        try {
-          const raw = localStorage.getItem('canem_user');
-          if (raw) location.href = '../app/portal.html';
-        } catch(e) { /* ignore */ }
+        // Permitir cambiar de cuenta desde esta pantalla aunque exista sesión activa.
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
           e.preventDefault();

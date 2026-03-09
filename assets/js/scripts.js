@@ -332,7 +332,7 @@ async function renderHomeListado(searchText = '') {
       card.innerHTML = `
         <h3 class="text-xl font-bold text-accent">${escapeHtml(perro.nombre || 'Sin nombre')}</h3>
         <p class="text-gray-600">${escapeHtml(perro.raza || 'Sin raza')}</p>
-        <a class="inline-block mt-4 text-primary font-semibold" href="pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
+        <a class="inline-block mt-4 text-primary font-semibold" href="/pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
       `;
       list.appendChild(card);
     });
@@ -351,7 +351,7 @@ async function renderHogar() {
 
   const user = getUser();
   if (!user) {
-    container.innerHTML = `<div class="soft-card p-6 text-center">Para ver tus perros necesitas iniciar sesión. <br/><a href="pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    container.innerHTML = `<div class="soft-card p-6 text-center">Para ver tus perros necesitas iniciar sesión. <br/><a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
     return;
   }
 
@@ -398,7 +398,7 @@ function createPerroCard(perro) {
         <p class="text-gray-500 text-sm mt-2">${perro.fecha_de_nacimiento ? 'Nacido: ' + escapeHtml(perro.fecha_de_nacimiento) : ''} ${edad ? ' · ' + edad : ''}</p>
       </div>
       <div class="mt-4 flex gap-3">
-        <a class="px-4 py-2 rounded-lg border text-sm text-[var(--canem-primary)] hover:bg-[var(--canem-primary)] hover:text-white transition-colors" href="../../pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Gestionar</a>
+        <a class="px-4 py-2 rounded-lg border text-sm text-[var(--canem-primary)] hover:bg-[var(--canem-primary)] hover:text-white transition-colors" href="/pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Gestionar</a>
         <button class="px-4 py-2 rounded-lg bg-red-600 text-white text-sm" data-id="${encodeURIComponent(perro.id)}">Eliminar</button>
       </div>
     </div>
@@ -478,7 +478,7 @@ function createCitaCard(cita, extraInfo = {}) {
         <div class="text-sm text-gray-500">${escapeHtml(extraInfo.usuarioEmail || '')}</div>
       </div>
       <div class="mt-3 flex gap-2">
-        <a class="px-3 py-2 rounded border text-sm text-[var(--canem-primary)]" href="pages/app/booking.html?id=${encodeURIComponent(cita.id)}">Gestionar</a>
+        <a class="px-3 py-2 rounded border text-sm text-[var(--canem-primary)]" href="/pages/app/booking.html?id=${encodeURIComponent(cita.id)}">Gestionar</a>
         <button class="px-3 py-2 rounded bg-red-600 text-white text-sm" data-id="${encodeURIComponent(cita.id)}">Eliminar</button>
       </div>
     </div>
@@ -522,7 +522,7 @@ async function renderCitas() {
 
   const user = getUser();
   if (!user) {
-    container.innerHTML = `<div class="soft-card p-6 text-center">Necesitas iniciar sesión para ver citas. <a href="pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    container.innerHTML = `<div class="soft-card p-6 text-center">Necesitas iniciar sesión para ver citas. <a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
     return;
   }
 
@@ -681,39 +681,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const path = location.pathname;
   const user = getUser();
   const protectedPaths = [
-    '../../pages/app/hogar.html',
-    '../../pages/app/portal.html',
-    '../../pages/app/citas.html',
-    '../../pages/app/perfil.html',
-    '../../pages/app/perros.html',
-    '../../pages/app/booking.html',
-    '../../pages/app/usuarios.html'
+    '/pages/app/hogar.html',
+    '/pages/app/portal.html',
+    '/pages/app/citas.html',
+    '/pages/app/perfil.html',
+    '/pages/app/perros.html',
+    '/pages/app/booking.html',
+    '/pages/app/usuarios.html'
   ];
 
   if (pathEndsWithAny(path, protectedPaths) && !user) {
-    location.href = '../../pages/auth/login.html';
+    location.href = '/pages/auth/login.html';
     return;
   }
 
-  if (pathEndsWithAny(path, ['../../pages/app/usuarios.html']) && !isAdminUser(user)) {
-    location.href = './index.html';
+  if (pathEndsWithAny(path, ['/pages/app/usuarios.html']) && !isAdminUser(user)) {
+    location.href = '/pages/public/index.html';
     return;
   }
 
-  if ((pathEndsWithAny(path, ['../../pages/auth/login.html', '../../pages/auth/register.html'])) && user) {
-    location.href = '../../pages/app/portal.html';
+  if ((pathEndsWithAny(path, ['/pages/auth/login.html', '/pages/auth/register.html'])) && user) {
+    location.href = '/pages/app/portal.html';
     return;
   }
 
-  if (pathEndsWithAny(path, ['../../pages/app/hogar.html', '../../pages/app/portal.html'])) {
+  if (pathEndsWithAny(path, ['/pages/app/hogar.html', '/pages/app/portal.html'])) {
     renderHogar();
-  } else if (pathEndsWithAny(path, ['../../pages/app/citas.html'])) {
+  } else if (pathEndsWithAny(path, ['/pages/app/citas.html'])) {
     renderCitas();
-  } else if (pathEndsWithAny(path, ['../../pages/app/usuarios.html'])) {
+  } else if (pathEndsWithAny(path, ['/pages/app/usuarios.html'])) {
     renderUsuarios();
-  } else if (pathEndsWithAny(path, ['../../pages/app/perfil.html'])) {
+  } else if (pathEndsWithAny(path, ['/pages/app/perfil.html'])) {
     renderPerfilPage();
-  } else if (path === '/' || path.endsWith('./index.html')) {
+  } else if (path === '/' || pathEndsWithAny(path, ['/index.html', '/pages/public/index.html'])) {
     renderHomeListado();
     const searchInput = document.getElementById('home-search');
     if (searchInput) {
@@ -734,7 +734,7 @@ function renderPerfilPage() {
   if (!el) return;
   const user = getUser();
   if (!user) {
-    el.innerHTML = `<div class="soft-card p-6 text-center">Para ver tu perfil, inicia sesión. <br/><a href="../../pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
+    el.innerHTML = `<div class="soft-card p-6 text-center">Para ver tu perfil, inicia sesión. <br/><a href="/pages/auth/login.html" class="text-primary font-bold">Inicia sesión</a></div>`;
     return;
   }
   el.innerHTML = `
@@ -747,12 +747,12 @@ function renderPerfilPage() {
         <p><strong>Rol:</strong> ${isAdminUser(user) ? 'Admin' : 'Cliente'}</p>
       </div>
       <div class="mt-6 flex gap-3">
-        <a href="pages/auth/register.html" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Actualizar datos</a>
+        <a href="/pages/auth/register.html" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Actualizar datos</a>
         <button id="perfil-logout" class="px-4 py-2 rounded bg-gray-100">Cerrar sesión</button>
       </div>
     </div>
   `;
   document.getElementById('perfil-logout').addEventListener('click', () => {
-    clearToken(); clearUser(); renderHeaderActions(); location.href = './index.html';
+    clearToken(); clearUser(); renderHeaderActions(); location.href = '/pages/public/index.html';
   });
 }

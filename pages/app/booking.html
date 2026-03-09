@@ -10,6 +10,7 @@
 <!-- FLATPICKR -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <link href="/assets/css/style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
@@ -75,6 +76,8 @@ const selectPerro=document.getElementById('select-perro');
 const inputHora=document.getElementById('input-hora');
 const bookingForm=document.getElementById('bookingForm');
 const feedback=document.getElementById('booking-feedback');
+const params = new URLSearchParams(location.search);
+const citaId = params.get('id');
 
 function showFeedback(text,type){
 
@@ -191,24 +194,34 @@ hora:hora+":00",
 id_perro:Number(idPerro)
 };
 
-const res=await fetch(API_BASE+"/citas",{
-method:"POST",
+const url = citaId ? `${API_BASE}/citas/${citaId}` : API_BASE+"/citas";
+const method = citaId ? "PUT" : "POST";
+const res=await fetch(url,{
+method,
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify(payload)
 });
 
 if(!res.ok){
 showFeedback("No se pudo crear la cita","error");
+await Swal.fire({ icon: 'error', text: 'No se pudo crear la cita' });
 return;
 }
 
-showFeedback("Cita creada correctamente","success");
+showFeedback(citaId ? "Cita actualizada correctamente" : "Cita creada correctamente","success");
+await Swal.fire({
+icon:'success',
+text:citaId ? 'Cita actualizada correctamente' : 'Cita creada correctamente',
+timer:1200,
+showConfirmButton:false
+});
 
 setTimeout(()=>location.href="/pages/app/citas.html",1000);
 
 }catch(err){
 
 showFeedback("Error conectando con el servidor","error");
+await Swal.fire({ icon:'error', text:'Error conectando con el servidor' });
 
 }
 
@@ -236,6 +249,26 @@ generarHoras(dateStr);
 });
 
 bookingForm.addEventListener("submit",handleSubmit);
+
+if (citaId) {
+	(async () => {
+		try {
+			const res = await fetch(`${API_BASE}/citas/${citaId}`);
+			if (!res.ok) throw new Error('No se pudo cargar la cita');
+			const cita = await res.json();
+
+			document.querySelector('h1').textContent = 'Editar cita';
+			document.querySelector('button[type="submit"]').textContent = 'Guardar cambios';
+			document.getElementById('input-fecha').value = cita.fecha;
+			generarHoras(cita.fecha);
+			inputHora.value = String(cita.hora || '').slice(0, 5);
+			await loadPerros();
+			selectPerro.value = String(cita.id_perro);
+		} catch (err) {
+			showFeedback(err.message, 'error');
+		}
+	})();
+}
 
 });
 

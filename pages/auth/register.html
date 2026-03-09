@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Registro - Canem</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
     <link href="/assets/css/style.css" rel="stylesheet"/>
     <script type="module" defer src="/assets/js/scripts.js"></script>
@@ -124,17 +125,17 @@
 
           // Validación básica
           if (!nombre || !apellido || !email || !password || !telefono) {
-            alert('Por favor completa todos los campos obligatorios.');
+            await Swal.fire({ icon: 'warning', text: 'Por favor completa todos los campos obligatorios.' });
             return;
           }
           if (password.length < 6) {
-            alert('La contraseña debe tener al menos 6 caracteres.');
+            await Swal.fire({ icon: 'warning', text: 'La contraseña debe tener al menos 6 caracteres.' });
             return;
           }
           // validar formato del email con regex simple
           const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRe.test(email)) {
-            alert('Introduce un correo electrónico válido.');
+            await Swal.fire({ icon: 'warning', text: 'Introduce un correo electrónico válido.' });
             return;
           }
 
@@ -169,10 +170,11 @@
               telefono
             }));
 
+            await Swal.fire({ icon: 'success', text: 'Cuenta creada correctamente.' });
             // redirigir al portal
             location.href = '/pages/app/portal.html';
           } catch (err) {
-            alert('Error: ' + (err.message || 'No se pudo completar el registro.'));
+            await Swal.fire({ icon: 'error', text: 'Error: ' + (err.message || 'No se pudo completar el registro.') });
           }
         });
       });

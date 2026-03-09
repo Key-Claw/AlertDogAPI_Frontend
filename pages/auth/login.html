@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Iniciar sesión - Canem</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
     <link href="/assets/css/style.css" rel="stylesheet"/>
     <script type="module" defer src="/assets/js/scripts.js"></script>
@@ -120,7 +121,10 @@
             // redirigir
             location.href = '/pages/app/portal.html';
           } catch (err) {
-            alert('Error: ' + err.message);
+            await Swal.fire({
+              icon: 'error',
+              text: 'Error: ' + err.message
+            });
           }
         });
       });

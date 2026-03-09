@@ -7,6 +7,7 @@
 
     <!-- Tailwind CDN (mantener) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Tipografía y estilos adicionales -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
@@ -89,6 +90,13 @@
               <input id="perro-fecha" name="fecha_de_nacimiento" class="soft-input w-full px-4 py-3" type="date" />
             </div>
 
+            <div>
+              <label for="perro-usuario" class="block text-gray-600 mb-2 font-semibold">Usuario propietario</label>
+              <select id="perro-usuario" name="id_usuario" class="soft-input w-full px-4 py-3" required>
+                <option value="">Cargando usuarios...</option>
+              </select>
+            </div>
+
             <!-- estado / mensajes -->
             <div id="form-status" class="text-sm min-h-[1.5rem] text-center text-gray-600"></div>
 
@@ -113,7 +121,7 @@
     </footer>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('DOMContentLoaded', async () => {
         // año
         const y = document.getElementById('year');
         if (y) y.textContent = new Date().getFullYear();
@@ -133,13 +141,69 @@
         const status = document.getElementById('form-status');
         const form = document.getElementById('perroForm');
         const submitBtn = document.getElementById('perroBtn');
+        const userSelect = document.getElementById('perro-usuario');
+        const query = new URLSearchParams(location.search);
+        const editingId = query.get('id');
 
         const rawUser = localStorage.getItem('canem_user');
         const currentUser = rawUser ? JSON.parse(rawUser) : null;
+        const isAdmin = currentUser && (currentUser.rol === 1 || currentUser.rol === '1' || currentUser.rol === true);
         if (!currentUser || !currentUser.id) {
           status.textContent = 'Debes iniciar sesión para registrar un perro.';
           status.className = 'text-sm text-red-600 text-center';
           submitBtn.disabled = true;
+        }
+
+        async function loadUsuariosAndDefault() {
+          if (!currentUser || !currentUser.id) return;
+
+          try {
+            const res = await fetch('http://localhost:3000/usuarios');
+            const usuarios = await res.json();
+            userSelect.innerHTML = '';
+
+            if (isAdmin) {
+              userSelect.innerHTML = '<option value="">Selecciona usuario</option>';
+              usuarios.forEach((u) => {
+                const opt = document.createElement('option');
+                opt.value = String(u.id);
+                opt.textContent = `${u.nombre} ${u.apellido} (${u.email})`;
+                userSelect.appendChild(opt);
+              });
+            } else {
+              userSelect.innerHTML = `<option value="${currentUser.id}">${currentUser.nombre || 'Usuario actual'}</option>`;
+              userSelect.value = String(currentUser.id);
+              userSelect.disabled = true;
+            }
+          } catch (err) {
+            userSelect.innerHTML = '<option value="">No se pudieron cargar usuarios</option>';
+          }
+        }
+
+        async function loadPerroForEdit(id) {
+          try {
+            const res = await fetch(`http://localhost:3000/perros/${id}`);
+            if (!res.ok) throw new Error('No se pudo cargar el perro');
+            const perro = await res.json();
+
+            document.getElementById('perro-nombre').value = perro.nombre || '';
+            document.getElementById('perro-raza').value = perro.raza || '';
+            document.getElementById('perro-genero').value = String(perro.genero ?? '');
+            document.getElementById('perro-fecha').value = perro.fecha_de_nacimiento || '';
+            userSelect.value = String(perro.id_usuario || '');
+
+            submitBtn.textContent = 'Guardar cambios';
+            status.textContent = 'Editando perro existente';
+            status.className = 'text-sm text-blue-600 text-center';
+          } catch (err) {
+            status.textContent = err.message;
+            status.className = 'text-sm text-red-600 text-center';
+          }
+        }
+
+        await loadUsuariosAndDefault();
+        if (editingId) {
+          await loadPerroForEdit(editingId);
         }
 
         form.addEventListener('submit', async (e) => {
@@ -163,18 +227,8 @@
           }
 
           const genero = generoVal === "1" ? 1 : 0;
-          let payload = { nombre, raza, genero, fecha_de_nacimiento: fecha };
-
-          // Asociar perro al usuario autenticado.
-          try {
-            const raw = localStorage.getItem('canem_user');
-            if (raw) {
-              const user = JSON.parse(raw);
-              if (user && user.id) payload.id_usuario = user.id;
-            }
-          } catch (err) {
-            // no pasa nada si no se puede leer
-          }
+          const idUsuario = Number(userSelect.value);
+          let payload = { nombre, raza, genero, fecha_de_nacimiento: fecha, id_usuario: idUsuario };
 
           if (!payload.id_usuario) {
             status.textContent = 'Sesión inválida. Vuelve a iniciar sesión.';
@@ -185,8 +239,10 @@
           }
 
           try {
-            const res = await fetch('http://localhost:3000/perros', {
-              method: 'POST',
+            const url = editingId ? `http://localhost:3000/perros/${editingId}` : 'http://localhost:3000/perros';
+            const method = editingId ? 'PUT' : 'POST';
+            const res = await fetch(url, {
+              method,
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
             });
@@ -201,12 +257,21 @@
             }
 
             // éxito
-            status.textContent = 'Perro añadido correctamente. Redirigiendo al panel...';
+            status.textContent = editingId
+              ? 'Perro actualizado correctamente. Redirigiendo al panel...'
+              : 'Perro añadido correctamente. Redirigiendo al panel...';
             status.className = 'text-sm text-green-600 text-center';
+            await Swal.fire({
+              icon: 'success',
+              text: editingId ? 'Perro actualizado correctamente.' : 'Perro añadido correctamente.',
+              timer: 1400,
+              showConfirmButton: false
+            });
             setTimeout(() => window.location.href = '/pages/app/portal.html', 900);
           } catch (err) {
             status.textContent = err.message || 'Error desconocido. Intenta más tarde.';
             status.className = 'text-sm text-red-600 text-center';
+            await Swal.fire({ icon: 'error', text: status.textContent });
           } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;

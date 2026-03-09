@@ -107,6 +107,21 @@
       </div>
     </section>
 
+    <section id="directorio" class="py-14 px-6">
+      <div class="container mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-3xl font-bold text-accent">Perros de la comunidad</h2>
+            <p class="text-gray-600">Listado dinámico desde la API con búsqueda.</p>
+          </div>
+          <div class="w-full md:w-80">
+            <input id="home-search" type="search" placeholder="Buscar por nombre o raza" class="soft-input w-full px-4 py-3" />
+          </div>
+        </div>
+        <div id="home-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-[#F9F9F9] pt-20 pb-10 border-t border-white/50">
       <div class="container mx-auto px-6">

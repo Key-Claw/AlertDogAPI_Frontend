@@ -2,6 +2,51 @@
 // El backend expone recursos en la raíz (ej: /usuarios, /perros, /citas).
 const API_BASE = 'http://localhost:3000';
 
+let swalLoader;
+function loadSwal() {
+  if (window.Swal) return Promise.resolve(window.Swal);
+  if (!swalLoader) {
+    swalLoader = new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+      script.onload = () => resolve(window.Swal);
+      script.onerror = () => resolve(null);
+      document.head.appendChild(script);
+    });
+  }
+  return swalLoader;
+}
+
+async function notify(type, message) {
+  const swal = await loadSwal();
+  if (!swal) {
+    alert(message);
+    return;
+  }
+  const icon = type === 'error' ? 'error' : 'success';
+  await swal.fire({
+    icon,
+    text: message,
+    timer: 1800,
+    showConfirmButton: false
+  });
+}
+
+async function confirmAction(message) {
+  const swal = await loadSwal();
+  if (!swal) {
+    return confirm(message);
+  }
+  const result = await swal.fire({
+    icon: 'warning',
+    text: message,
+    showCancelButton: true,
+    confirmButtonText: 'Sí, continuar',
+    cancelButtonText: 'Cancelar'
+  });
+  return result.isConfirmed;
+}
+
 function isAdminUser(user) {
   const roleValue = user?.rol ?? user?.role ?? user?.isAdmin;
   return roleValue === true || roleValue === 1 || roleValue === '1' || roleValue === 'admin';
@@ -190,7 +235,7 @@ function openAuthModal() {
       const currentPath = location.pathname;
       if (currentPath === '/pages/app/portal.html' || currentPath === '/pages/app/hogar.html' || currentPath === '/pages/app/perfil.html' || currentPath === '/pages/app/citas.html') location.reload();
     } catch (err) {
-      alert('Error: ' + err.message);
+      await notify('error', 'Error: ' + err.message);
     }
   });
 }
@@ -233,6 +278,43 @@ async function getPerrosAll() {
   } catch (err) {
     console.error('Error al obtener perros:', err);
     throw err;
+  }
+}
+
+async function getPerrosByQuery(searchText = '') {
+  const qs = new URLSearchParams();
+  if (searchText) qs.set('q', searchText);
+  const res = await apiFetch(`/perros${qs.toString() ? `?${qs.toString()}` : ''}`, { method: 'GET' });
+  const all = await res.json().catch(() => []);
+  return Array.isArray(all) ? all : [];
+}
+
+async function renderHomeListado(searchText = '') {
+  const list = document.getElementById('home-list');
+  if (!list) return;
+
+  list.innerHTML = `<div class="soft-card p-6 text-center col-span-full">Cargando listado...</div>`;
+  try {
+    const perros = await getPerrosByQuery(searchText);
+    list.innerHTML = '';
+
+    if (!perros.length) {
+      list.innerHTML = `<div class="soft-card p-6 text-center col-span-full">No se encontraron perros para ese criterio.</div>`;
+      return;
+    }
+
+    perros.forEach((perro) => {
+      const card = document.createElement('article');
+      card.className = 'soft-card p-5';
+      card.innerHTML = `
+        <h3 class="text-xl font-bold text-accent">${escapeHtml(perro.nombre || 'Sin nombre')}</h3>
+        <p class="text-gray-600">${escapeHtml(perro.raza || 'Sin raza')}</p>
+        <a class="inline-block mt-4 text-primary font-semibold" href="/pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
+      `;
+      list.appendChild(card);
+    });
+  } catch (err) {
+    list.innerHTML = `<div class="soft-card p-6 text-center text-red-600 col-span-full">No se pudo cargar el listado.</div>`;
   }
 }
 
@@ -303,14 +385,14 @@ function createPerroCard(perro) {
   if (delBtn) {
     delBtn.addEventListener('click', async () => {
       const id = delBtn.getAttribute('data-id');
-      if (!confirm('¿Eliminar este perro? Esta acción no se puede deshacer.')) return;
+      if (!(await confirmAction('¿Eliminar este perro? Esta acción no se puede deshacer.'))) return;
       try {
         await deletePerro(id);
         card.remove();
         const container = document.getElementById('hogar-list');
         if (container && container.children.length === 0) document.getElementById('hogar-empty')?.classList.remove('hidden');
       } catch (err) {
-        alert('No se pudo eliminar el perro.');
+        await notify('error', 'No se pudo eliminar el perro.');
       }
     });
   }
@@ -383,12 +465,12 @@ function createCitaCard(cita, extraInfo = {}) {
   if (delBtn) {
     delBtn.addEventListener('click', async () => {
       const id = delBtn.getAttribute('data-id');
-      if (!confirm('¿Eliminar esta cita?')) return;
+      if (!(await confirmAction('¿Eliminar esta cita?'))) return;
       try {
         await deleteCita(id);
         card.remove();
       } catch (err) {
-        alert('No se pudo eliminar la cita.');
+        await notify('error', 'No se pudo eliminar la cita.');
       }
     });
   }
@@ -513,7 +595,7 @@ function createUsuarioRow(usuario) {
         // recargar tabla
         await renderUsuarios();
       } catch (err) {
-        alert('No se pudo actualizar el rol.');
+        await notify('error', 'No se pudo actualizar el rol.');
       }
     });
   }
@@ -600,6 +682,18 @@ document.addEventListener('DOMContentLoaded', () => {
     renderUsuarios();
   } else if (path === '/pages/app/perfil.html') {
     renderPerfilPage();
+  } else if (path === '/' || path === '/index.html') {
+    renderHomeListado();
+    const searchInput = document.getElementById('home-search');
+    if (searchInput) {
+      let timer;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          renderHomeListado(searchInput.value.trim());
+        }, 250);
+      });
+    }
   }
 });
 

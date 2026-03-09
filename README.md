@@ -20,6 +20,7 @@ Documentos relacionados:
 - Frontend consolidado en `pages/` + `assets/`.
 - Build de produccion funcional con Vite.
 - Integracion con backend en `http://localhost:3000`.
+- Rutas privadas (`/pages/app/*`) validadas para carga de datos en `usuarios`, `citas` y `hogar`.
 
 ## Tecnologias usadas (que son y para que sirven)
 | Tecnologia | Que es | Para que se usa en este proyecto |
@@ -74,6 +75,12 @@ npm install
 npm run dev
 ```
 
+Alternativa para probar build de produccion:
+```bash
+npm run build
+npm run preview -- --host 127.0.0.1 --port 4174
+```
+
 ### Paso 5. Abre la aplicacion
 En consola veras una URL parecida a `http://127.0.0.1:5173/`.
 Abrela en el navegador.
@@ -81,10 +88,19 @@ Abrela en el navegador.
 ### Paso 6. Conecta con backend
 Para operar CRUD real, el backend debe estar activo en `http://localhost:3000`.
 
+Checklist minimo full-stack:
+1. Backend DB arriba (`docker compose up -d db` en backend).
+2. Backend API arriba (`npm start` o `npm run dev` en backend).
+3. Frontend arriba (`npm run dev` o `npm run preview`).
+
 ### Paso 7. Prueba flujos clave sin programar
 - Registro y login en `pages/auth/`.
 - Alta y listado de perros en `pages/app/perros.html`.
 - Alta y listado de citas en `pages/app/booking.html`.
+
+Credenciales de demo (seed backend por defecto):
+- Admin: `admin@alertdog.com` / `admin123`
+- Usuario: `luis@correo.com` / `luis123`
 
 ### Paso 8. Genera version de produccion
 ```bash
@@ -104,6 +120,11 @@ Orden recomendado de lectura:
 - `npm run dev`: servidor de desarrollo.
 - `npm run build`: build de produccion en `dist/`.
 - `npm run preview`: servir build localmente.
+
+Nota de puertos:
+- `npm run dev` suele usar `5173`.
+- `npm run preview` puede cambiar de puerto si hay conflicto (por ejemplo `4174` o `4175`).
+- Si backend bloquea por CORS, revisa `CORS_ORIGINS` en backend.
 
 ## CI (GitHub Actions)
 Workflow: `.github/workflows/frontend-ci.yml`

@@ -273,6 +273,7 @@ function openAuthModal() {
           apellido: 'Usuario',
           email,
           telefono: String(Date.now()).slice(-10),
+          localidad: document.getElementById('localidad')?.value.trim() || 'Sin localdad',
           password
         };
 
@@ -291,7 +292,8 @@ function openAuthModal() {
           nombre: payload.nombre,
           apellido: payload.apellido,
           email: payload.email,
-          telefono: payload.telefono
+          telefono: payload.telefono,
+          localidad: payload.localidad
         });
       }
       renderHeaderActions();
@@ -649,6 +651,7 @@ function createUsuarioRow(usuario, perrosPorUsuario = new Map()) {
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.id)}</td>
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.nombre)} ${escapeHtml(usuario.apellido)}</td>
     <td class="px-4 py-2 border-b">${escapeHtml(usuario.email)}</td>
+    <td>class="px-4 py-2 border-b">${escapeHtml(usuario.localidad)}</td>
     <td class="px-4 py-2 border-b">${perrosLabel}</td>
     <td class="px-4 py-2 border-b">${isAdminUser(usuario) ? 'Admin' : 'Cliente'}</td>
     <td class="px-4 py-2 border-b">
@@ -658,6 +661,7 @@ function createUsuarioRow(usuario, perrosPorUsuario = new Map()) {
       <button class="px-3 py-1 rounded ${isCurrentUser ? 'bg-red-300 cursor-not-allowed' : 'bg-red-600'} text-white btn-delete-user" data-id="${encodeURIComponent(usuario.id)}" ${isCurrentUser ? 'disabled' : ''}>Eliminar</button>
     </td>
   `;
+
   const btn = tr.querySelector('.btn-toggle-role');
   if (btn) {
     btn.addEventListener('click', async () => {
@@ -829,6 +833,7 @@ function renderPerfilPage() {
         <p><strong>Nombre:</strong> ${escapeHtml(user.nombre || user.name || '')} ${escapeHtml(user.apellido || user.lastname || '')}</p>
         <p><strong>Email:</strong> ${escapeHtml(user.email || '')}</p>
         <p><strong>Teléfono:</strong> ${escapeHtml(user.telefono || '')}</p>
+        <p><strong>Localidad:</strong> ${escapeHtml(user.localidad || '')}</p>
         <p><strong>Rol:</strong> ${isAdminUser(user) ? 'Admin' : 'Cliente'}</p>
       </div>
       <div class="mt-6 flex gap-3">
@@ -837,6 +842,7 @@ function renderPerfilPage() {
       </div>
     </div>
   `;
+
   document.getElementById('perfil-logout').addEventListener('click', () => {
     clearToken(); clearUser(); renderHeaderActions(); location.href = '/pages/public/index.html';
   });
@@ -874,6 +880,10 @@ function renderEditarPerfilPage() {
           <label class="block text-gray-600 mb-2 font-semibold">Teléfono</label>
           <input id="edit-telefono" class="soft-input w-full px-4 py-3" value="${escapeHtml(user.telefono || '')}" />
         </div>
+        <div>
+          <label class="block text-gray-600 mb-2 font-semibold">Localidad</label>
+          <input id="edit-localidad" type="text" class="soft-input w-full px-4 py-3" value="${escapeHtml(user.localidad || '')}" />
+        </div>
         <div class="flex gap-3">
           <button type="submit" class="px-4 py-2 rounded bg-[var(--canem-primary)] text-white">Guardar cambios</button>
           <a href="/pages/app/perfil.html" class="px-4 py-2 rounded bg-gray-100">Cancelar</a>
@@ -888,7 +898,8 @@ function renderEditarPerfilPage() {
       nombre: document.getElementById('edit-nombre').value.trim(),
       apellido: document.getElementById('edit-apellido').value.trim(),
       email: document.getElementById('edit-email').value.trim(),
-      telefono: document.getElementById('edit-telefono').value.trim()
+      telefono: document.getElementById('edit-telefono').value.trim(),
+      localidad: document.getElementById('edit-localidad').value.trim()
     };
 
     try {

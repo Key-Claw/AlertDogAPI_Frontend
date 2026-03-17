@@ -92,6 +92,24 @@ function getApiErrorMessage(payload, fallback) {
   return fallback;
 }
 
+function getPerroGeneroLabel(value) {
+  return (value === 1 || value === '1' || value === true) ? 'Macho' : 'Hembra';
+}
+
+function getPerroEdadLabel(fechaNacimiento) {
+  if (!fechaNacimiento) return '';
+  try {
+    const born = new Date(fechaNacimiento);
+    if (Number.isNaN(born.getTime())) return '';
+    const diff = Date.now() - born.getTime();
+    const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    if (years > 0) return `${years} año${years > 1 ? 's' : ''}`;
+    return `${Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24 * 30)))} meses`;
+  } catch (_) {
+    return '';
+  }
+}
+
 // ---------- utils ----------
 function pathEndsWithAny(targetPath, arr) {
   return arr.some(p => targetPath.endsWith(p));
@@ -380,7 +398,7 @@ async function renderHomeListado(searchText = '') {
       card.innerHTML = `
         <h3 class="text-xl font-bold text-accent">${escapeHtml(perro.nombre || 'Sin nombre')}</h3>
         <p class="text-gray-600">${escapeHtml(perro.raza || 'Sin raza')}</p>
-        <a class="inline-block mt-4 text-primary font-semibold" href="/pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
+        <a class="inline-block mt-4 text-primary font-semibold" href="/pages/public/perro-detalle.html?id=${encodeURIComponent(perro.id)}">Ver detalle</a>
       `;
       list.appendChild(card);
     });
@@ -421,18 +439,8 @@ function createPerroCard(perro) {
   const card = document.createElement('div');
   card.className = 'soft-card p-6 rounded-lg';
 
-  let edad = '';
-  if (perro.fecha_de_nacimiento) {
-    try {
-      const born = new Date(perro.fecha_de_nacimiento);
-      const diff = Date.now() - born.getTime();
-      const years = Math.floor(diff / (1000*60*60*24*365.25));
-      if (years > 0) edad = `${years} año${years>1?'es':''}`;
-      else edad = Math.max(0, Math.floor(diff / (1000*60*60*24*30))) + ' meses';
-    } catch {}
-  }
-
-  const generoTxt = (perro.genero === 1 || perro.genero === '1' || perro.genero === true) ? 'Macho' : 'Hembra';
+  const edad = getPerroEdadLabel(perro.fecha_de_nacimiento);
+  const generoTxt = getPerroGeneroLabel(perro.genero);
   const imgSrc = perro.imagen || '/Foto2.jpg';
 
   card.innerHTML = `
@@ -445,7 +453,8 @@ function createPerroCard(perro) {
         <p class="text-gray-600">${escapeHtml(perro.raza || '')} · ${escapeHtml(generoTxt)}</p>
         <p class="text-gray-500 text-sm mt-2">${perro.fecha_de_nacimiento ? 'Nacido: ' + escapeHtml(perro.fecha_de_nacimiento) : ''} ${edad ? ' · ' + edad : ''}</p>
       </div>
-      <div class="mt-4 flex gap-3">
+      <div class="mt-4 flex gap-3 flex-wrap">
+        <a class="px-4 py-2 rounded-lg border text-sm text-[var(--canem-primary)] hover:bg-[var(--canem-primary)] hover:text-white transition-colors" href="/pages/public/perro-detalle.html?id=${encodeURIComponent(perro.id)}">Detalle</a>
         <a class="px-4 py-2 rounded-lg border text-sm text-[var(--canem-primary)] hover:bg-[var(--canem-primary)] hover:text-white transition-colors" href="/pages/app/perros.html?id=${encodeURIComponent(perro.id)}">Gestionar</a>
         <button class="px-4 py-2 rounded-lg bg-red-600 text-white text-sm" data-id="${encodeURIComponent(perro.id)}">Eliminar</button>
       </div>
@@ -735,6 +744,80 @@ async function renderUsuarios() {
   }
 }
 
+// ---------- DETALLE PERRO ----------
+async function renderPerroDetallePage() {
+  const loadingEl = document.getElementById('perro-detalle-loading');
+  const contentEl = document.getElementById('perro-detalle-content');
+  const errorEl = document.getElementById('perro-detalle-error');
+  const idTextEl = document.getElementById('perro-detalle-id');
+  const nombreEl = document.getElementById('perro-detalle-nombre');
+  const razaEl = document.getElementById('perro-detalle-raza');
+  const generoEl = document.getElementById('perro-detalle-genero');
+  const edadEl = document.getElementById('perro-detalle-edad');
+  const nacimientoEl = document.getElementById('perro-detalle-fecha');
+  const ownerEl = document.getElementById('perro-detalle-owner');
+  const imagenEl = document.getElementById('perro-detalle-imagen');
+  const ctaEl = document.getElementById('perro-detalle-manage');
+
+  if (!loadingEl || !contentEl || !errorEl) return;
+
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get('id');
+  if (!id) {
+    loadingEl.classList.add('hidden');
+    errorEl.textContent = 'Falta el identificador del perro.';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+
+  try {
+    const perroRes = await fetch(`${API_BASE}/perros/${encodeURIComponent(id)}`);
+    if (!perroRes.ok) throw new Error('No se pudo cargar el perro.');
+    const perro = await perroRes.json();
+
+    let ownerLabel = 'No disponible';
+    if (perro?.id_usuario) {
+      const usersRes = await fetch(`${API_BASE}/usuarios`);
+      if (usersRes.ok) {
+        const users = await usersRes.json().catch(() => []);
+        const owner = Array.isArray(users) ? users.find((u) => Number(u.id) === Number(perro.id_usuario)) : null;
+        if (owner) {
+          ownerLabel = `${owner.nombre || ''} ${owner.apellido || ''}`.trim() || owner.email || `Usuario #${owner.id}`;
+        }
+      }
+    }
+
+    if (idTextEl) idTextEl.textContent = String(perro.id ?? id);
+    if (nombreEl) nombreEl.textContent = perro.nombre || 'Sin nombre';
+    if (razaEl) razaEl.textContent = perro.raza || 'Sin raza';
+    if (generoEl) generoEl.textContent = getPerroGeneroLabel(perro.genero);
+    if (edadEl) edadEl.textContent = getPerroEdadLabel(perro.fecha_de_nacimiento) || 'No disponible';
+    if (nacimientoEl) nacimientoEl.textContent = perro.fecha_de_nacimiento || 'No disponible';
+    if (ownerEl) ownerEl.textContent = ownerLabel;
+    if (imagenEl) {
+      imagenEl.src = perro.imagen || '/Foto2.jpg';
+      imagenEl.alt = `Foto de ${perro.nombre || 'perro'}`;
+    }
+
+    const user = getUser();
+    if (ctaEl) {
+      if (user && (isAdminUser(user) || Number(user.id) === Number(perro.id_usuario))) {
+        ctaEl.href = `/pages/app/perros.html?id=${encodeURIComponent(perro.id ?? id)}`;
+        ctaEl.classList.remove('hidden');
+      } else {
+        ctaEl.classList.add('hidden');
+      }
+    }
+
+    loadingEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+  } catch (_) {
+    loadingEl.classList.add('hidden');
+    errorEl.textContent = 'No se pudo cargar el detalle del perro.';
+    errorEl.classList.remove('hidden');
+  }
+}
+
 // ---------- helpers ----------
 function escapeHtml(str) {
   if (!str && str !== 0) return '';
@@ -794,6 +877,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCitas();
   } else if (pathEndsWithAny(path, ['/pages/app/usuarios.html'])) {
     renderUsuarios();
+  } else if (pathEndsWithAny(path, ['/pages/public/perro-detalle.html'])) {
+    renderPerroDetallePage();
   } else if (pathEndsWithAny(path, ['/pages/app/perfil.html'])) {
     renderPerfilPage();
   } else if (pathEndsWithAny(path, ['/pages/app/editar-perfil.html'])) {

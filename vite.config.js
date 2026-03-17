@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         root: resolve(__dirname, 'index.html'),
         home: resolve(__dirname, 'pages/public/index.html'),
+        perroDetalle: resolve(__dirname, 'pages/public/perro-detalle.html'),
         about: resolve(__dirname, 'pages/public/about.html'),
         contact: resolve(__dirname, 'pages/public/contact.html'),
         services: resolve(__dirname, 'pages/public/services.html'),

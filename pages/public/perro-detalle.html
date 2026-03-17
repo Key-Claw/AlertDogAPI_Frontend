@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle del perro - Canem</title>
+    <script type="module" src="../../assets/js/tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="../../assets/css/style.css" rel="stylesheet" />
+    <script type="module" defer src="../../assets/js/scripts.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+  </head>
+  <body class="font-body antialiased bg-gray-50 text-gray-700 min-h-screen flex flex-col">
+    <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-white/20">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <a class="flex items-center gap-3 group" href="/pages/public/index.html">
+            <img src="../../public/favicon.jpeg" alt="Canem logo" class="w-10 h-10 rounded-xl object-cover shadow-sm" />
+            <span class="text-2xl font-bold text-accent tracking-tight group-hover:text-primary transition-colors">Canem</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-8">
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/index.html">Inicio</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/services.html">Servicios</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/about.html">Sobre nosotros</a>
+            <a class="text-accent font-medium hover:text-primary transition-colors" href="/pages/public/contact.html">Contacto</a>
+          </nav>
+
+          <div id="header-actions" class="hidden md:flex items-center gap-4" aria-live="polite"></div>
+
+          <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-xl bg-white text-accent flex items-center justify-center shadow-sm" aria-expanded="false" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden mt-4 bg-white rounded-xl p-6 shadow-lg" aria-hidden="true">
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/index.html">Inicio</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/services.html">Servicios</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/about.html">Sobre nosotros</a>
+          <a class="block py-2 text-accent font-medium hover:text-primary" href="/pages/public/contact.html">Contacto</a>
+          <div id="mobile-header-actions" class="mt-4"></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-28 pb-12 flex-grow">
+      <div class="container mx-auto px-6 max-w-5xl">
+        <div id="perro-detalle-loading" class="soft-card p-6 text-center">Cargando detalle...</div>
+
+        <div id="perro-detalle-error" class="hidden soft-card p-6 text-center text-red-600"></div>
+
+        <section id="perro-detalle-content" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <article class="soft-card p-5">
+            <div class="h-[360px] w-full overflow-hidden rounded-2xl">
+              <img id="perro-detalle-imagen" src="/Foto2.jpg" alt="Foto del perro" class="w-full h-full object-cover" />
+            </div>
+          </article>
+
+          <article class="soft-card p-7">
+            <p class="text-sm text-gray-500 mb-2">Ficha #<span id="perro-detalle-id"></span></p>
+            <h1 id="perro-detalle-nombre" class="text-3xl font-extrabold text-accent mb-5">Perro</h1>
+
+            <dl class="space-y-3 text-gray-700">
+              <div class="flex justify-between gap-4 border-b pb-2">
+                <dt class="font-semibold">Raza</dt>
+                <dd id="perro-detalle-raza"></dd>
+              </div>
+              <div class="flex justify-between gap-4 border-b pb-2">
+                <dt class="font-semibold">Género</dt>
+                <dd id="perro-detalle-genero"></dd>
+              </div>
+              <div class="flex justify-between gap-4 border-b pb-2">
+                <dt class="font-semibold">Edad</dt>
+                <dd id="perro-detalle-edad"></dd>
+              </div>
+              <div class="flex justify-between gap-4 border-b pb-2">
+                <dt class="font-semibold">Nacimiento</dt>
+                <dd id="perro-detalle-fecha"></dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="font-semibold">Responsable</dt>
+                <dd id="perro-detalle-owner"></dd>
+              </div>
+            </dl>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="/pages/public/index.html" class="soft-btn px-5 py-2.5 text-primary font-bold">Volver al listado</a>
+              <a id="perro-detalle-manage" href="#" class="hidden soft-btn soft-btn-primary px-5 py-2.5 text-white font-bold">Gestionar perro</a>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <footer class="bg-[#F9F9F9] pt-10 pb-10 border-t border-white/50">
+      <div class="container mx-auto px-6">
+        <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-gray-500 text-sm">© <span id="year"></span> Canem. Todos los derechos reservados.</p>
+          <div class="flex gap-6">
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Política de privacidad</a>
+            <a class="text-gray-500 text-sm hover:text-primary transition-colors" href="/pages/public/contact.html">Términos y condiciones</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
